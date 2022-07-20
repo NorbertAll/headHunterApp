@@ -2,8 +2,6 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
 
-export const xxx = 1;
-
 export const App = () => {
   return (
     <div className="App">
