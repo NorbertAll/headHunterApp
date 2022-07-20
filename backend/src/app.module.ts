@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { HrModule } from './hr/hr.module';
+import { HrUserModule } from './hrUser/hrUser.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { HrModule } from './hr/hr.module';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
     }),
-    HrModule,
+    HrUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
