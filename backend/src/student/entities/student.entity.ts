@@ -1,8 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ContractType, TypeWork } from '../../../types';
 
 @Entity()
-export class Student extends BaseEntity {
+export class Student {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
