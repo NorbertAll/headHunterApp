@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ContractType, TypeWork } from '../../../types';
 
 @Entity()
-export class Student {
+export class StudentProfile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

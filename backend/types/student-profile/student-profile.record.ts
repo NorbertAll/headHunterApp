@@ -1,6 +1,7 @@
-import { ContractType, TypeWork } from './student';
+import { ContractType, TypeWork } from './student-profile';
 
-export interface StudentCreate {
+export interface StudentProfileRecord {
+  id: string;
   unique: true;
   email: string;
   phone: number;

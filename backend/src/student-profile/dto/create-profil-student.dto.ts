@@ -5,9 +5,9 @@ import {
   IsString,
   IsUrl,
 } from 'class-validator';
-import { ContractType, TypeWork } from '../../../types';
+import { ContractType, TypeWork } from 'types';
 
-export class CreateStudentDto {
+export class CreateProfilStudentDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
