@@ -1,11 +1,13 @@
 import {BadRequestException, Body, Controller, NotFoundException, Post, Res } from '@nestjs/common';
 import {UserService} from "../user/user.service";
+import {JwtService} from "@nestjs/jwt";
 
 @Controller()
 export class AuthController {
 
     constructor(
         private userService: UserService,
+        private jwtService: JwtService,
     ) {
     }
 
@@ -25,6 +27,12 @@ export class AuthController {
             throw new BadRequestException('Password is invalid');
         }
 
-        return {email, password};
+        const jwt = await this.jwtService.signAsync({
+            id: user.id,
+
+        })
+
+        return jwt;
     }
+
 }
