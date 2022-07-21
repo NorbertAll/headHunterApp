@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Status } from '../../../types/student';
 
 @Entity()
 export class Student {
@@ -24,4 +25,13 @@ export class Student {
 
   @Column()
   bonusProjectUrls: string;
+
+  @Column()
+  token: string;
+
+  @Column({
+    type: 'enum',
+    enum: Status,
+  })
+  status: Status;
 }
