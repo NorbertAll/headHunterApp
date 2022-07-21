@@ -1,6 +1,7 @@
 import {BadRequestException, Body, Controller, NotFoundException, Post, Res } from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
+import { Response } from "express";
 
 @Controller()
 export class AuthController {
@@ -15,6 +16,7 @@ export class AuthController {
     async login(
         @Body('email') email:string,
         @Body('password') password:string,
+        @Res({passthrough: true}) response: Response,
     )
     {
         const user = await this.userService.findOne({where: {email}});
@@ -32,7 +34,11 @@ export class AuthController {
 
         })
 
-        return jwt;
+        response.cookie('jwt', jwt, {httpOnly: true});
+
+        return {
+            message: 'success',
+        };
     }
 
 }
