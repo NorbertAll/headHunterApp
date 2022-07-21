@@ -1,11 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+
+import { Router } from 'components/router/Router';
+
+import { store } from './store/store';
 
 export const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<div>Hello World</div>} />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   );
 };
