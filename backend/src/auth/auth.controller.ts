@@ -1,7 +1,7 @@
-import {BadRequestException, Body, Controller, NotFoundException, Post, Res } from '@nestjs/common';
+import {BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
-import { Response } from "express";
+import { Response, Request } from "express";
 
 @Controller()
 export class AuthController {
@@ -40,5 +40,18 @@ export class AuthController {
             message: 'success',
         };
     }
+
+    @Get('admin/user')
+    async user(@Req() request: Request){
+        const cookie = request.cookies['jwt'];
+        try {
+            const {id} = await this.jwtService.verifyAsync(cookie);
+
+            return await this.userService.find({where:{id}});
+
+        } catch (e) {
+            throw new BadRequestException(`You must be logged. Error message: ${e.message}`);
+        }
+    };
 
 }
