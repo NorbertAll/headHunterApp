@@ -5,7 +5,7 @@ import {
     Controller,
     Get,
     NotFoundException,
-    Post,
+    Post, Put,
     Req,
     Res,
     UseInterceptors
@@ -74,6 +74,29 @@ export class AuthController {
 
         return {
             message: 'success',
+        }
+    }
+
+    @Put('admin/user/password')
+    async updatePassword(
+        @Req() request: Request,
+        @Body('password') password: string,
+        @Body('passwordConfirm') passwordConfirm: string,
+    ){
+        if (password !== passwordConfirm) {
+            throw new BadRequestException('Password do not match!');
+        }
+        try {
+            const cookie = request.cookies['jwt'];
+
+            const {id} = await this.jwtService.verifyAsync(cookie);
+
+            await this.userService.update(id, {
+                password
+            })
+            return this.userService.findOne({where:{id}})
+        } catch (e) {
+            throw new BadRequestException(`You must be logged. Error message: ${e.message}`)
         }
     }
 
