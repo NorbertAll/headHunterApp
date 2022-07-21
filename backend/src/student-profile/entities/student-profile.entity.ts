@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ContractType, TypeWork } from '../../../types';
+import { Student } from '../../student/entities/student.entity';
 
 @Entity()
 export class StudentProfile {
@@ -81,4 +88,8 @@ export class StudentProfile {
     type: 'longtext',
   })
   courses: string;
+
+  @OneToOne(() => Student)
+  @JoinColumn()
+  student: Student;
 }
