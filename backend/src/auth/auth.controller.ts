@@ -1,9 +1,21 @@
-import {BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    ClassSerializerInterceptor,
+    Controller,
+    Get,
+    NotFoundException,
+    Post,
+    Req,
+    Res,
+    UseInterceptors
+} from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import { Response, Request } from "express";
 
 @Controller()
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
 
     constructor(
