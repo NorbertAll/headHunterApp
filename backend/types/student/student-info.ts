@@ -1,9 +1,20 @@
-import { ContractType, TypeWork } from './student-profile';
+import { Status } from './student';
+import { ContractType, TypeWork } from '../student-profile';
 
-export interface StudentProfileRecord {
+export interface StudentInfo {
   id: string;
 
   email: string;
+
+  courseCompletion: number;
+
+  courseEngagement: number;
+
+  projectDegree: number;
+
+  teamProjectDegree: number;
+
+  bonusProjectUrls: string;
 
   phone: number;
 
@@ -36,4 +47,6 @@ export interface StudentProfileRecord {
   workExperience: string;
 
   courses: string;
+
+  status: Status;
 }

@@ -15,7 +15,7 @@ export class Student {
   courseCompletion: number;
 
   @Column()
-  courseEngagment: number;
+  courseEngagement: number;
 
   @Column()
   projectDegree: number;
