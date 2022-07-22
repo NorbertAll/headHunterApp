@@ -7,12 +7,13 @@ import {
     NotFoundException,
     Post, Put,
     Req,
-    Res,
+    Res, UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import { Response, Request } from "express";
+import {AuthGuard} from "./auth.guard";
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -53,19 +54,18 @@ export class AuthController {
         };
     }
 
+    @UseGuards(AuthGuard)
     @Get('admin/user')
     async user(@Req() request: Request){
         const cookie = request.cookies['jwt'];
-        try {
-            const {id} = await this.jwtService.verifyAsync(cookie);
 
-            return await this.userService.find({where:{id}});
+        const {id} = await this.jwtService.verifyAsync(cookie);
 
-        } catch (e) {
-            throw new BadRequestException(`You must be logged. Error message: ${e.message}`);
-        }
+        return this.userService.findOne({where:{id}});
+
     };
 
+    @UseGuards(AuthGuard)
     @Post('admin/logout')
     async logout(
         @Res({passthrough: true}) response: Response,
@@ -77,6 +77,7 @@ export class AuthController {
         }
     }
 
+    @UseGuards(AuthGuard)
     @Put('admin/user/password')
     async updatePassword(
         @Req() request: Request,
@@ -86,18 +87,18 @@ export class AuthController {
         if (password !== passwordConfirm) {
             throw new BadRequestException('Password do not match!');
         }
-        try {
-            const cookie = request.cookies['jwt'];
 
-            const {id} = await this.jwtService.verifyAsync(cookie);
+        const cookie = request.cookies['jwt'];
 
-            await this.userService.update(id, {
+        const {id} = await this.jwtService.verifyAsync(cookie);
+
+
+        await this.userService.update(id, {
                 password
-            })
-            return this.userService.findOne({where:{id}})
-        } catch (e) {
-            throw new BadRequestException(`You must be logged. Error message: ${e.message}`)
-        }
+        });
+
+        return this.userService.findOne({where:{id}});
+
     }
 
 }
