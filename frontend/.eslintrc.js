@@ -38,7 +38,7 @@ module.exports = {
   ],
   rules: {
     'react/function-component-definition': [
-      'error',
+      'warn',
       { namedComponents: 'arrow-function' },
     ],
     'react/destructuring-assignment': 'off',
@@ -48,9 +48,9 @@ module.exports = {
     'no-param-reassign': 'off',
     'arrow-body-style': 'off',
     'import/no-cycle': 'off',
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'warn',
     'import/order': [
-      'error',
+      'warn',
       {
         'newlines-between': 'always',
         groups: [
@@ -65,7 +65,7 @@ module.exports = {
       },
     ],
     'import/no-extraneous-dependencies': [
-      'error',
+      'warn',
       {
         devDependencies: [
           '**/*.test.ts',
