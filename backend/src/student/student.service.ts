@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { StudentProfile } from '../student-profile/entities/student-profile.entity';
 import { getConnection } from 'typeorm';
 import { Student } from './entities/student.entity';
 import { StudentInfo } from '../../types/student/student-info';
+import { CreateStudentDto } from './dto/create-student.dto';
 
 @Injectable()
 export class StudentService {
@@ -36,5 +36,25 @@ export class StudentService {
       .leftJoin('StudentProfile', 't1', 't0.id=t1.studentId')
       .getRawMany();
     return result;
+  }
+
+  async addStudent(newStudent: CreateStudentDto[]): Promise<string> {
+    for (const item of newStudent) {
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Student)
+        .values({
+          email: item.email,
+          courseCompletion: item.courseCompletion,
+          courseEngagement: item.courseEngagement,
+          projectDegree: item.projectDegree,
+          teamProjectDegree: item.projectDegree,
+          bonusProjectUrls: item.bonusProjectUrls,
+        })
+        .execute();
+    }
+
+    return 'ok';
   }
 }
