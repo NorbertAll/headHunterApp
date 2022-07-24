@@ -1,13 +1,19 @@
-import { Provider } from 'react-redux';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+
+import { AuthProvider } from 'components/context/auth/AuthProvider';
 
 import { Router } from 'components/router/Router';
 
-import { store } from './store/store';
+
+import { theme } from 'utils/theme';
 
 export const App = () => {
   return (
-    <Provider store={store}>
-      <Router />
-    </Provider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router />
+      </ThemeProvider>
+    </AuthProvider>
   );
 };

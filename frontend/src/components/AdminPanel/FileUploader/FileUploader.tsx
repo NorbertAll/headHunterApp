@@ -15,7 +15,6 @@ const styles = {
     } as CSSProperties,
     browseFile: {
       width: '20%',
-      
     } as CSSProperties,
     acceptedFile: {
       border: '1px solid #ccc',
@@ -29,7 +28,10 @@ const styles = {
       padding: '0 20px',
     } as CSSProperties,
     progressBarBackgroundColor: {
-      backgroundColor: 'red',
+      backgroundColor: 'green',
+      width: '100%',
+      paddingLeft: 10,
+      paddingRight: 10,
     } as CSSProperties,
     sendButton:{
       display: 'block',
@@ -95,7 +97,7 @@ const FileUploader = () => {
       
     }}
   >
-    {({
+    {({ 
       getRootProps,
       acceptedFile,
       ProgressBar,
@@ -103,13 +105,13 @@ const FileUploader = () => {
     }: any) => (
       <>
         <div style={styles.csvReader}>
-          <Button variant="contained" color="primary" type='button' {...getRootProps()} style={styles.browseFile}>
+          <Button style={styles.browseFile}variant="contained" color="info"  {...getRootProps()} >
             Wyszukaj pliku
           </Button>
           <div style={styles.acceptedFile}>
             {acceptedFile && acceptedFile.name}
           </div>
-          <Button {...getRemoveFileProps()} style={styles.remove} type='button' variant="contained" color="error" >
+          <Button {...getRemoveFileProps()} style={styles.remove} variant="contained" color="error" >
             Wyczyść
           </Button>
         </div>
