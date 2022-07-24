@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HrUserModule } from './hrUser/hrUser.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HrUserModule } from './hrUser/hrUser.module';
       }),
     }),
     HrUserModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
