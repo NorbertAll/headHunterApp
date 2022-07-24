@@ -7,13 +7,15 @@ import {
     NotFoundException,
     Post, Put,
     Req,
-    Res, UseGuards,
+    Res, UnauthorizedException, UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import { Response, Request } from "express";
 import {AuthGuard} from "./auth.guard";
+import { RegisterDto } from './dto/register.dto';
+import * as bcrypt from 'bcrypt';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -25,11 +27,47 @@ export class AuthController {
     ) {
     }
 
-    @Post('admin/login')
+    @Post(['admin/register', 'hr/register', '/student/register'])
+    async register(
+        @Body() body: RegisterDto,
+        @Req() request: Request,
+        @Body('email') email: string,){
+        const {passwordConfirm, ...data} = body;
+
+        const user = await this.userService.findOne({where: {email}});
+
+        if(user) {
+            throw new NotFoundException('Email is use! Try new email!');
+        }
+
+        if (body.password !== body.passwordConfirm) {
+            throw new BadRequestException('Password do not match!');
+        }
+
+
+        const hashed = await bcrypt.hash(body.password, 12);
+
+        let role;
+        if(request.path === '/admin/register') {
+            role = 'admin';
+        } else if (request.path === '/hr/register') {
+            role = 'hr';
+        } else role = 'student';
+
+
+        return this.userService.save({
+            ...data,
+            password: hashed,
+            roles: role,
+        });
+    }
+
+    @Post(['admin/login', 'hr/login', '/student/login'])
     async login(
         @Body('email') email:string,
         @Body('password') password:string,
         @Res({passthrough: true}) response: Response,
+        @Req() request: Request,
     )
     {
         const user = await this.userService.findOne({where: {email}});
@@ -38,14 +76,29 @@ export class AuthController {
             throw new NotFoundException('User is not found');
         }
 
-        if(!await (password === user.password)){
+        if(!await bcrypt.compare(password, user.password)){
             throw new BadRequestException('Password is invalid');
         }
 
+        let scope;
+
+        if(request.path === '/admin/login') {
+            scope = 'admin';
+        } else if (request.path === '/hr/login') {
+            scope = 'hr';
+        } else scope = 'student';
+
+        const userRole = user.roles === scope;
+        if(!userRole){
+            throw new UnauthorizedException('You dont have access');
+        }
+
+
         const jwt = await this.jwtService.signAsync({
             id: user.id,
+            scope: scope
 
-        })
+        });
 
         response.cookie('jwt', jwt, {httpOnly: true});
 
@@ -55,7 +108,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Get('admin/user')
+    @Get(['admin/user', 'hr/user', '/student/user'])
     async user(@Req() request: Request){
         const cookie = request.cookies['jwt'];
 
@@ -66,7 +119,7 @@ export class AuthController {
     };
 
     @UseGuards(AuthGuard)
-    @Post('admin/logout')
+    @Post(['admin/logout', 'hr/logout', '/student/user'])
     async logout(
         @Res({passthrough: true}) response: Response,
     ){
@@ -78,7 +131,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Put('admin/user/password')
+    @Put(['admin/user/password', 'hr/user/password'])
     async updatePassword(
         @Req() request: Request,
         @Body('password') password: string,
@@ -94,7 +147,7 @@ export class AuthController {
 
 
         await this.userService.update(id, {
-                password
+            password: await bcrypt.hash(password, 12)
         });
 
         return this.userService.findOne({where:{id}});
