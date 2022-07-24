@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HrUserModule } from './hrUser/hrUser.module';
@@ -18,13 +16,14 @@ import { HrUserModule } from './hrUser/hrUser.module';
         username: configService.get('DATABASE_USERNAME'),
         password: configService.get('DATABASE_PASSWORD'),
         synchronize: configService.get<boolean>('DATABASE_SYNC'),
+        logging: configService.get<boolean>('DATABASE_LOGGING'),
         database: configService.get('DATABASE_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
     }),
     HrUserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
