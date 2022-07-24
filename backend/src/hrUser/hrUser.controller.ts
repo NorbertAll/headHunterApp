@@ -7,8 +7,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { HrUserService } from './hrUser.service';
-import { GetListOfHrResponse, GetOneHrResponse } from 'src/interfaces/hrUser';
 import { CreateHrUserDto } from './dto/create-hrUser.dto';
+import { GetListOfHrResponse, GetOneHrResponse } from '../../types/hr/hrUser';
 
 @Controller('hr')
 export class HrUserController {
