@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Box, Button, Link, TextField, Typography, Stack } from '@mui/material';
+import { Box, Button, Link, TextField, Stack } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -76,22 +76,10 @@ export const Login = () => {
           id="password"
           autoComplete="current-password"
         />
-        <Box width="100%" textAlign="right">
+        <Stack direction="row" justifyContent="space-between">
           <Link href="#" color="grey.50">
             Zapomniałeś hasła?
           </Link>
-        </Box>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Typography variant="body1">
-            Nie masz konta?
-            <Link marginLeft=".4em" href="#" color="grey.50">
-              Zarejestruj się
-            </Link>
-          </Typography>
           <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
             Zaloguj się
           </Button>
