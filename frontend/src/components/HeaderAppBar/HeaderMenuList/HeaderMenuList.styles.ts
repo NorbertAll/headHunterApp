@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 export const StyledBoxInfoContainer = styled(Box)(() => ({
   display: 'flex',
-  minWidth: '15vw',
-  justifyContent: 'space-between',
+  width: '15vw',
+  justifyContent: 'space-around',
   alignItems: 'center',
   cursor: 'pointer',
 }));
