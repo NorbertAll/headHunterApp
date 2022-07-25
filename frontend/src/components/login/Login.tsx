@@ -2,9 +2,9 @@
 import { Box, Button, Link, TextField, Stack } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'src/contexts/auth/useAuth';
+import { Auth, UserRoles } from '../../contexts/auth/AuthProvider';
 
-import { Auth, UserRoles } from 'contexts/auth/AuthProvider';
-import { useAuth } from 'contexts/auth/useAuth';
 
 const sendLoginRequest = async (
   email: string,

@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { Login } from 'components/login/Login';
-import { NotFound } from 'components/global/NotFound';
-import { RequireAuth } from 'contexts/auth/RequireAuth';
-import { UserRoles } from 'contexts/auth/AuthProvider';
-import { Unauthorized } from 'components/global/Unauthorized';
+import { UserRoles } from '../../contexts/auth/AuthProvider';
+import { RequireAuth } from '../../contexts/auth/RequireAuth';
+import { NotFound } from '../global/NotFound';
+import { Unauthorized } from '../global/Unauthorized';
+import { Login } from '../login/Login';
+
 
 export const Router = () => {
   return (
