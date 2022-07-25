@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { Student } from './entities/student.entity';
 import { StudentInfo } from '../../types/student/student-info';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class StudentService {
+  constructor(
+    @InjectRepository(Student)
+    private studentRepository: Repository<Student>,
+  ) {}
+
   async getAllStudentInfo(): Promise<StudentInfo[]> {
     const result = await getConnection()
       .createQueryBuilder(Student, 't0')
@@ -34,6 +40,7 @@ export class StudentService {
       .addSelect(`t1.workExperience`, 'workExperience')
       .addSelect(`t1.courses`, 'courses')
       .leftJoin('StudentProfile', 't1', 't0.id=t1.studentId')
+      .where(`status not in ('Niedostępny')`)
       .getRawMany();
     return result;
   }
@@ -54,7 +61,9 @@ export class StudentService {
         })
         .execute();
     }
-
     return 'ok';
+  }
+  getOneStudentById(id: string): Promise<Student> {
+    return this.studentRepository.findOne(id);
   }
 }
