@@ -2,8 +2,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { AppBar, Box, Container } from '@mui/material';
 
-import { HeaderMenuList } from 'components/hr/HeaderMenuList/HeaderMenuList';
-import { StyledLogoAppBar } from 'components/layout/Hr/HeaderAppBar/HeaderAppBar.styles';
+import { HeaderMenuList } from './HeaderMenuList/HeaderMenuList';
+import { StyledLogoAppBar } from './HeaderAppBar.styles';
 
 export const HeaderAppBar = () => {
   return (

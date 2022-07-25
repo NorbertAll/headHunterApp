@@ -8,7 +8,7 @@ import {
   StyledBoxUserName,
   StyledMenuItem,
   StyledMenuItemLink,
-} from 'components/hr/HeaderMenuList/HeaderMenuList.styles';
+} from './HeaderMenuList.styles';
 
 export const HeaderMenuList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,7 +49,7 @@ export const HeaderMenuList = () => {
           horizontal: 'left',
         }}
       >
-        <StyledMenuItemLink to="/hr/account">
+        <StyledMenuItemLink to="/hr/account/id">
           <StyledMenuItem onClick={handleClose}>Konto</StyledMenuItem>
         </StyledMenuItemLink>
         <StyledMenuItemLink to="/login">

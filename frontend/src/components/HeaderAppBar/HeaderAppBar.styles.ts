@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
 
-import megaKurs from '../../../../assets/images/megaKurs.png';
+import megaKurs from '../../assets/images/megaKurs.png';
 
 export const StyledLogoAppBar = styled(Box)(() => ({
   width: '100px',
