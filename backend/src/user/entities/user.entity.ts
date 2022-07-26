@@ -22,3 +22,9 @@ export class User {
     @Column({default: "admin"})
     roles: string;
 }
+
+ export enum UserRoles {
+    ADMIN= 'admin',
+    HR = 'hr',
+    STUDENT = 'student,'
+}

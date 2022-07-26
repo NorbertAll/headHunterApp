@@ -7,7 +7,7 @@ import {
     NotFoundException,
     Post, Put,
     Req,
-    Res, UnauthorizedException, UseGuards,
+    Res, SetMetadata, UnauthorizedException, UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import {UserService} from "../user/user.service";
@@ -16,6 +16,9 @@ import { Response, Request } from "express";
 import {AuthGuard} from "./auth.guard";
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { UserRoles } from 'src/user/entities/user.entity';
+import { Roles } from './auth.role.dekorator';
+import {RolesGuard} from "./auth.role.guard";
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -28,6 +31,7 @@ export class AuthController {
     }
 
     @Post(['admin/register', 'hr/register', '/student/register'])
+    @Roles(UserRoles.ADMIN)
     async register(
         @Body() body: RegisterDto,
         @Req() request: Request,
@@ -62,6 +66,7 @@ export class AuthController {
         });
     }
 
+
     @Post(['admin/login', 'hr/login', '/student/login'])
     async login(
         @Body('email') email:string,
@@ -80,23 +85,10 @@ export class AuthController {
             throw new BadRequestException('Password is invalid');
         }
 
-        let scope;
-
-        if(request.path === '/admin/login') {
-            scope = 'admin';
-        } else if (request.path === '/hr/login') {
-            scope = 'hr';
-        } else scope = 'student';
-
-        const userRole = user.roles === scope;
-        if(!userRole){
-            throw new UnauthorizedException('You dont have access');
-        }
-
 
         const jwt = await this.jwtService.signAsync({
             id: user.id,
-            scope: scope
+            scope: user.roles
 
         });
 
@@ -117,9 +109,17 @@ export class AuthController {
         return this.userService.findOne({where:{id}});
 
     };
+    @Roles(UserRoles.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
+    @Get('/admin')
+    async find(@Req() request: Request){
+
+        return this.userService.find({});
+
+    };
 
     @UseGuards(AuthGuard)
-    @Post(['admin/logout', 'hr/logout', '/student/user'])
+    @Post(['admin/logout', 'hr/logout', '/student/logout'])
     async logout(
         @Res({passthrough: true}) response: Response,
     ){
@@ -144,7 +144,6 @@ export class AuthController {
         const cookie = request.cookies['jwt'];
 
         const {id} = await this.jwtService.verifyAsync(cookie);
-
 
         await this.userService.update(id, {
             password: await bcrypt.hash(password, 12)
