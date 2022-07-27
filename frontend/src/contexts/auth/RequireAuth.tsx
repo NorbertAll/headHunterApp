@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { UserRoles } from './AuthProvider';
+import { UserRoles } from 'types';
 import { useAuth } from './useAuth';
 
 interface RequireAuthProps {

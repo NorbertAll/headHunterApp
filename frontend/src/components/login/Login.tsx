@@ -1,42 +1,36 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Box, Button, Link, TextField, Stack } from '@mui/material';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from 'src/contexts/auth/useAuth';
-import { Auth, UserRoles } from '../../contexts/auth/AuthProvider';
+import { Auth, UserRoles } from 'types';
+import { useAuth } from '../../contexts/auth/useAuth';
+import { useApi } from '../../hooks/useApi';
+import { loginRequest } from './loginApi';
 
-
-const sendLoginRequest = async (
-  email: string,
-  password: string,
-): Promise<Auth> => {
-  await setTimeout(() => {
-    console.log(email, password);
-  }, 2000);
-
-  return {
-    accessToken: '1244123asdas',
-    roles: [UserRoles.ADMIN, UserRoles.STUDENT, UserRoles.HR],
-  };
-};
 
 export const Login = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
+  const login = useApi<Auth>(loginRequest);
+
+  useEffect(() => {
+    if (login.data?.roles.find(role => role === UserRoles.ADMIN)) navigate('/admin');
+    else if (login.data?.roles.find(role => role === UserRoles.HR)) navigate('/hr');
+    else if (login.data?.roles.find(role => role === UserRoles.STUDENT)) navigate('/student');
+    else navigate('/login');
+  }, [auth]);
+
+  useEffect(() => {
+    if (login.data) setAuth(login.data);
+  }, [login.data]);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    try {
-      const loginResponse = await sendLoginRequest('test@email', 'password');
-      console.log(loginResponse);
-      setAuth(loginResponse);
-    } catch (error) {
-      console.log(error);
-    }
-
-    navigate('/admin');
+    await login.request();
   };
+
+  if (login.error) console.log(login.error);
 
   return (
     <Box

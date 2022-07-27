@@ -1,15 +1,5 @@
 import { createContext, useState } from 'react';
-
-export enum UserRoles {
-  ADMIN = 'admin',
-  STUDENT = 'student',
-  HR = 'hr',
-}
-
-export interface Auth {
-  accessToken: string;
-  roles: UserRoles[];
-}
+import { Auth } from 'types';
 
 interface ContextType {
   auth: Auth;
@@ -22,7 +12,7 @@ interface ProviderProps {
 
 const initialContextValue = {
   auth: { accessToken: '', roles: [] },
-  setAuth: () => {},
+  setAuth: () => { },
 };
 
 export const AuthContext = createContext<ContextType>(initialContextValue);
