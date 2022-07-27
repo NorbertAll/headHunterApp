@@ -48,7 +48,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'arrow-body-style': 'off',
     'import/no-cycle': 'off',
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'off',
     'import/order': [
       'error',
       {
