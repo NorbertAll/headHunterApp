@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Table, TableBody, TableCell, TableRow , styled, } from '@mui/material'
+import { Table, TableBody, TableCell, TableRow , styled, Avatar, } from '@mui/material'
 
 import c from '../../utils/constants';
 
 import Search from './Search';
 import Pagination from './Pagination';
-import { ContentContainer, Container, Controlls, FilterButton, ListContainer, Tab, Tabs } from './styles';
+import { ContentContainer, Container, Controlls, ActionButton, ListContainer, Tab, Tabs } from './styles';
 
 const testData = Array.from(Array(10)).map(() => ({
   id_student: Math.floor(Math.random() * 123124),
@@ -37,10 +37,35 @@ const testData = Array.from(Array(10)).map(() => ({
 
 const StyledTableRow = styled(TableRow)(() => ({
   borderBottom: '16px solid #1E1E1F',
-
-  '&:last-child td, &:last-child th': {
-    border: 0,
+  display: 'flex',
+  alignItems: 'center',
+  '&.no-border-bottom': {
+    border: 'none'
   },
+  '&:last-child td, &:last-child th': {
+    border: 'none',
+  },
+  '& > *': { 
+    border: 'none'
+  },
+  '& .max-width': {
+    flex: 1
+  },
+  '& .name': {
+    fontSize: 18
+  },
+  '& .reservation': {
+    display: 'flex',
+    flexDirection: 'column',
+    marginRight: '2rem',
+    '& .date': {
+      letterSpacing: 1.6
+    },
+    '& .reservation-tag': {
+      fontSize: 14,
+      color: '#CFCFCF'
+    }
+  }
 }));
 
 
@@ -74,14 +99,35 @@ const StudentsList = () => {
           <ListContainer>
             <Controlls>
               <Search />
-              <FilterButton>Filtrowanie</FilterButton>
+              <ActionButton color='secondary'>Filtrowanie</ActionButton>
             </Controlls>
             
             <Table>
               <TableBody>
-                {students?.length > 0 && students.map(item => (
-                  <StyledTableRow key={item.id_student}>
-                    <TableCell>{`${item.first_name} ${item.last_name[0]}.`}</TableCell>
+                {students?.length > 0 && students.map((item, index) => (
+                  <StyledTableRow key={item.id_student} className={index === students.length - 1 ? 'no-border-bottom' : ''}>
+                    {activeTab === c.INTERVIEWS && (
+                      <TableCell className="reservation">
+                          <span className='reservation-tag'>Rezerwacja do</span>
+                          <span className='date'>30.07.2022</span>
+                      </TableCell>
+                    )}
+                    {activeTab === c.INTERVIEWS && (
+                      <Avatar />
+                    )}
+                    <TableCell className='max-width name'>
+                    {activeTab === c.STUDENTS ? 
+                    `${item.first_name} ${item.last_name[0]}.` :
+                    `${item.first_name} ${item.last_name}`
+                    }
+                    </TableCell>
+                    <TableCell>
+                      {activeTab === c.STUDENTS && <ActionButton className='m-l-sm'>Zarezerwuj rozmowę</ActionButton>}
+                      {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Pokaż CV</ActionButton>}
+                      {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Brak zainteresowania</ActionButton>}
+                      {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Zatrudniony</ActionButton>}
+                      
+                    </TableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
