@@ -2,11 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { UserRoles } from 'types';
 import { RequireAuth } from './contexts/auth/RequireAuth';
-import { NotFound } from './components/global/NotFound';
+import { NotFound } from './components/global/NotFound/NotFound';
 import { Unauthorized } from './components/global/Unauthorized';
 import { Login } from './components/login/Login';
 import { HeaderAppBar } from './components/HeaderAppBar/HeaderAppBar';
-
 
 export const Router = () => {
   return (
