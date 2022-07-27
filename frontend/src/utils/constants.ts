@@ -1,0 +1,4 @@
+export default {
+  STUDENTS: 'STUDENTS',
+  INTERVIEWS: 'INTERVIEWS'
+}
