@@ -15,6 +15,6 @@ export const loginRequest = async (
   console.log({ email, password });
   return Promise.resolve({
     accessToken: 'ausyfa76srctaihscj',
-    roles: [UserRoles.ADMIN],
+    roles: [UserRoles.HR],
   })
 };

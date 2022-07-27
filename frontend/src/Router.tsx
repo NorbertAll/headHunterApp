@@ -5,6 +5,7 @@ import { RequireAuth } from './contexts/auth/RequireAuth';
 import { NotFound } from './components/global/NotFound';
 import { Unauthorized } from './components/global/Unauthorized';
 import { Login } from './components/login/Login';
+import { HeaderAppBar } from './components/HeaderAppBar/HeaderAppBar';
 
 
 export const Router = () => {
@@ -24,6 +25,8 @@ export const Router = () => {
         {/* routes protected for hr */}
         <Route element={<RequireAuth allowedRoles={[UserRoles.HR]} />}>
           <Route path="/hr" element={<div>Strona hr</div>} />
+          <Route path="/hr/:id" element={<HeaderAppBar />} />
+          <Route path="/hr/account/:id" element={<div>Konto HR</div>} />
         </Route>
 
         {/* routes protected for student */}
