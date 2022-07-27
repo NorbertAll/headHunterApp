@@ -15,7 +15,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (login.data?.roles.find(role => role === UserRoles.ADMIN)) navigate('/admin');
-    else if (login.data?.roles.find(role => role === UserRoles.HR)) navigate('/hr');
+    else if (login.data?.roles.find(role => role === UserRoles.HR)) navigate('/hr/123');
     else if (login.data?.roles.find(role => role === UserRoles.STUDENT)) navigate('/student');
     else navigate('/login');
   }, [auth]);
