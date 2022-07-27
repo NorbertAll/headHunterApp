@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { UserRoles } from '../../contexts/auth/AuthProvider';
+import { UserRoles } from 'types';
 import { RequireAuth } from '../../contexts/auth/RequireAuth';
 import { NotFound } from '../global/NotFound';
 import { Unauthorized } from '../global/Unauthorized';
