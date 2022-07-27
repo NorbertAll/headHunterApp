@@ -7,16 +7,18 @@ import { useAuth } from '../../contexts/auth/useAuth';
 import { useApi } from '../../hooks/useApi';
 import { loginRequest } from './loginApi';
 
-
 export const Login = () => {
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const login = useApi<Auth>(loginRequest);
 
   useEffect(() => {
-    if (login.data?.roles.find(role => role === UserRoles.ADMIN)) navigate('/admin');
-    else if (login.data?.roles.find(role => role === UserRoles.HR)) navigate('/hr/123');
-    else if (login.data?.roles.find(role => role === UserRoles.STUDENT)) navigate('/student');
+    if (login.data?.roles.find((role) => role === UserRoles.ADMIN))
+      navigate('/admin');
+    else if (login.data?.roles.find((role) => role === UserRoles.HR))
+      navigate('/hr/123');
+    else if (login.data?.roles.find((role) => role === UserRoles.STUDENT))
+      navigate('/student');
     else navigate('/login');
   }, [auth]);
 
@@ -74,7 +76,12 @@ export const Login = () => {
           <Link href="#" color="grey.50">
             Zapomniałeś hasła?
           </Link>
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button
+            color="error"
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Zaloguj się
           </Button>
         </Stack>
