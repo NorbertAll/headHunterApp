@@ -1,22 +1,15 @@
-import { Provider } from 'react-redux';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-
-
+import { Router } from './Router';
+import { AuthProvider } from './contexts/auth/AuthProvider';
 import { theme } from './utils/theme';
 
-import { store } from './store/store';
-import { Router } from './router/Router';
-
-
 export const App = () => {
-    // types from BE to FE testing
-  
   return (
-    <Provider store={store}>
+    <AuthProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router />
       </ThemeProvider>
-    </Provider>
+    </AuthProvider>
   );
 };
