@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HrUserModule } from './hrUser/hrUser.module';
-import { MeetingModule } from './meeting/meeting.module';
+// import { MeetingModule } from './meeting/meeting.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { MeetingModule } from './meeting/meeting.module';
       }),
     }),
     HrUserModule,
-    MeetingModule,
+    // MeetingModule,
   ],
   controllers: [],
   providers: [],
