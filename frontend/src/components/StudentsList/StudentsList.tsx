@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { Table, TableBody, TableCell, TableRow , styled, } from '@mui/material'
 
 import c from '../../utils/constants';
 
 import Search from './Search';
-import { Container, Controlls, FilterButton, List, Tab, Tabs } from './styles';
+import Pagination from './Pagination';
+import { ContentContainer, Container, Controlls, FilterButton, ListContainer, Tab, Tabs } from './styles';
 
-const testData = Array.from(Array(6)).map(() => ({
+const testData = Array.from(Array(10)).map(() => ({
   id_student: Math.floor(Math.random() * 123124),
   tel: 123123123,
   first_name: 'Jan',
@@ -33,39 +35,62 @@ const testData = Array.from(Array(6)).map(() => ({
   status: ''
 }))
 
+const StyledTableRow = styled(TableRow)(() => ({
+  borderBottom: '16px solid #1E1E1F',
+
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 
 const StudentsList = () => {
   const [activeTab, setActiveTab] = useState(c.INTERVIEWS);
   const [students] = useState(() => testData)
-  console.log(students)
+
   const changeActiveTab = (tabName: string) => setActiveTab(tabName);
 
   return (
-    <Container>
-      <Tabs>
-        <Tab
-          activeTab={activeTab === c.STUDENTS}
-          className="tab"
-          onClick={() => changeActiveTab(c.STUDENTS)}
-        >
-          Dostępni kursanci
-        </Tab>
-        <Tab
-          activeTab={activeTab === c.INTERVIEWS}
-          className="tab"
-          onClick={() => changeActiveTab(c.INTERVIEWS)}
-        >
-          Do rozmowy
-        </Tab>
-      </Tabs>
-      <List>
-        <Controlls>
-          <Search />
-          <FilterButton>Filtrowanie</FilterButton>
-        </Controlls>
-        LISTA
-      </List>
-    </Container>
+
+      <Container>
+        <ContentContainer>
+
+          <Tabs>
+            <Tab
+              activeTab={activeTab === c.STUDENTS}
+              className="tab"
+              onClick={() => changeActiveTab(c.STUDENTS)}
+            >
+              Dostępni kursanci
+            </Tab>
+            <Tab
+              activeTab={activeTab === c.INTERVIEWS}
+              className="tab"
+              onClick={() => changeActiveTab(c.INTERVIEWS)}
+            >
+              Do rozmowy
+            </Tab>
+          </Tabs>
+          <ListContainer>
+            <Controlls>
+              <Search />
+              <FilterButton>Filtrowanie</FilterButton>
+            </Controlls>
+            
+            <Table>
+              <TableBody>
+                {students?.length > 0 && students.map(item => (
+                  <StyledTableRow key={item.id_student}>
+                    <TableCell>{`${item.first_name} ${item.last_name[0]}.`}</TableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+          </ListContainer>
+        </ContentContainer>
+        <Pagination />
+      </Container>
   );
 };
 

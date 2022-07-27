@@ -2,8 +2,12 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
 max-width: 1430px;
-background: #292A2B;
+
 margin: 1.625rem auto;
+`
+
+export const ContentContainer = styled.main`
+  background: #292A2B;
 `
 
 export const Tabs = styled.div`
@@ -20,7 +24,7 @@ border-bottom: ${(props) =>
   props.activeTab ? '3px solid #e02735' : '3px solid transparent'};
 `;
 
-export const List = styled.div`
+export const ListContainer = styled.div`
 padding: 0 20px;
 `
 
@@ -37,4 +41,9 @@ font-size: 16px;
 background-color: #1E1E1F;
 border: none;
 padding: 6px 10px;
+`
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
