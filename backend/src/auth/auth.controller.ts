@@ -67,7 +67,7 @@ export class AuthController {
     }
 
 
-    @Post(['admin/login', 'hr/login', '/student/login'])
+    @Post(['/login'])
     async login(
         @Body('email') email:string,
         @Body('password') password:string,
@@ -100,7 +100,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Get(['admin/user', 'hr/user', '/student/user'])
+    @Get(['/user'])
     async user(@Req() request: Request){
         const cookie = request.cookies['jwt'];
 
@@ -119,7 +119,7 @@ export class AuthController {
     };
 
     @UseGuards(AuthGuard)
-    @Post(['admin/logout', 'hr/logout', '/student/logout'])
+    @Post(['/logout'])
     async logout(
         @Res({passthrough: true}) response: Response,
     ){
