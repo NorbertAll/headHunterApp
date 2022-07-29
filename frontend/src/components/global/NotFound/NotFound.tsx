@@ -9,8 +9,9 @@ import {
 export const NotFound = () => {
   const navigate = useNavigate();
 
-  const info = "The page you were looking for doesn't Exist.";
-  const text = 'You may have mistyped the address or the page may have moved.';
+  const info = 'Strona, której szukasz nie istnieje.';
+  const text =
+    'Być może błędnie wpisałeś adres lub strona mogła zostać przeniesiona.';
 
   return (
     <>
@@ -24,7 +25,7 @@ export const NotFound = () => {
           color="error"
           variant="contained"
         >
-          Go Back
+          Powrót
         </Button>
       </StyledBoxErrorContainer>
       <StyledLinkForIcon
