@@ -1,5 +1,6 @@
 import { Box, MenuItem, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { theme } from '../../../utils/theme';
 
 export const StyledBoxInfoContainer = styled(Box)(() => ({
   display: 'flex',
@@ -11,17 +12,19 @@ export const StyledBoxInfoContainer = styled(Box)(() => ({
 
 export const StyledBoxUserName = styled(Box)(() => ({
   marginLeft: '1rem',
+  color: theme.palette.primary.contrastText,
 }));
 
 export const StyledBoxMenuIcon = styled(Box)(() => ({
   marginLeft: '1rem',
+  color: theme.palette.secondary.light,
 }));
 
 export const StyledMenuItem = styled(MenuItem)(() => ({
   minWidth: '15vw',
-  color: '#fff',
 }));
 
 export const StyledMenuItemLink = styled(Link)(() => ({
   textDecoration: 'none',
+  color: theme.palette.primary.contrastText,
 }));
