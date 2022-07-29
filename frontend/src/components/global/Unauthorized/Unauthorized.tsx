@@ -8,9 +8,9 @@ import {
 } from './Unauthorized.styles';
 
 export const Unauthorized = () => {
-  const title = 'No authorization found.';
-  const info = 'This page is not publically available.';
-  const text = 'To access it please login first.';
+  const title = 'Brak autoryzacji.';
+  const info = 'Ta strona nie jest publicznie dostępna.';
+  const text = 'Aby uzyskać do niej dostęp, najpierw się zaloguj.';
 
   return (
     <>
@@ -23,7 +23,7 @@ export const Unauthorized = () => {
         <Typography marginBottom="5vh">{text.toLocaleUpperCase()}</Typography>
         <StyledUnauthorizedLink to="/login">
           <Button size="large" color="error" variant="contained">
-            Return Home
+            Strona logowania
           </Button>
         </StyledUnauthorizedLink>
       </StyledBoxUnauthorizedContainer>
