@@ -3,14 +3,14 @@ import {Exclude} from "class-transformer";
 
 @Entity('users')
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column()
-    first_name: string;
+    name: string;
 
-    @Column()
-    last_name: string;
+    @Column({default: null})
+    token: string;
 
     @Column({unique:true})
     email: string;

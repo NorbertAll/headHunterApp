@@ -30,42 +30,6 @@ export class AuthController {
     ) {
     }
 
-    @Post(['admin/register', 'hr/register', '/student/register'])
-    @Roles(UserRoles.ADMIN)
-    async register(
-        @Body() body: RegisterDto,
-        @Req() request: Request,
-        @Body('email') email: string,){
-        const {passwordConfirm, ...data} = body;
-
-        const user = await this.userService.findOne({where: {email}});
-
-        if(user) {
-            throw new NotFoundException('Email is use! Try new email!');
-        }
-
-        if (body.password !== body.passwordConfirm) {
-            throw new BadRequestException('Password do not match!');
-        }
-
-
-        const hashed = await bcrypt.hash(body.password, 12);
-
-        let role;
-        if(request.path === '/admin/register') {
-            role = 'admin';
-        } else if (request.path === '/hr/register') {
-            role = 'hr';
-        } else role = 'student';
-
-
-        return this.userService.save({
-            ...data,
-            password: hashed,
-            roles: role,
-        });
-    }
-
 
     @Post(['/login'])
     async login(
@@ -92,11 +56,17 @@ export class AuthController {
 
         });
 
+        //await this.userService.save({token: jwt});
+        //await this.userService.save(jwt);
+        console.log({...user});
+        console.log({...user, name:'log'});
+
         response.cookie('jwt', jwt, {httpOnly: true});
 
-        return {
-            message: 'success',
-        };
+        return this.userService.save({
+            ...user,
+            token: jwt,
+        })
     }
 
     @UseGuards(AuthGuard)
@@ -109,6 +79,7 @@ export class AuthController {
         return this.userService.findOne({where:{id}});
 
     };
+
     @Roles(UserRoles.ADMIN)
     @UseGuards(AuthGuard, RolesGuard)
     @Get('/admin')
@@ -121,13 +92,26 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Post(['/logout'])
     async logout(
+        @Req() request: Request,
         @Res({passthrough: true}) response: Response,
     ){
+        const cookie = request.cookies['jwt'];
+        const {id} = await this.jwtService.verifyAsync(cookie);
+        const user = await this.userService.findOne({where: {id}});
+
+
         response.clearCookie('jwt');
 
-        return {
-            message: 'success',
-        }
+
+        return [
+            await this.userService.save({
+                ...user,
+                token: null,
+            }),
+            {
+                message: 'success',
+            }
+        ]
     }
 
     @UseGuards(AuthGuard)

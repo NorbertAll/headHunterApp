@@ -10,6 +10,10 @@ export class HrUserService {
     @InjectRepository(HrUser) private hrRepository: Repository<HrUser>,
   ) {}
 
+
+  //All endpoints and logic into Student
+
+
   async createHr(hrUser: CreateHrUserDto) {
     try {
       const newHrUser = this.hrRepository.create(hrUser);

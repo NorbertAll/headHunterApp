@@ -10,6 +10,10 @@ import { HrUserService } from './hrUser.service';
 import { CreateHrUserDto } from './dto/create-hrUser.dto';
 import { GetListOfHrResponse, GetOneHrResponse } from '../../types/hr/hrUser';
 
+
+//All endpoints and logic into Student
+
+
 @Controller('hr')
 export class HrUserController {
   constructor(private readonly hrService: HrUserService) {}

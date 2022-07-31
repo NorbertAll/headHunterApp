@@ -22,6 +22,6 @@ import {Auth} from "./entities/auth.entity";
       {
           provide: APP_GUARD,
           useClass: RolesGuard,
-      },]
+      },],
 })
 export class AuthModule {}
