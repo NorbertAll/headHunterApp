@@ -24,6 +24,56 @@ export const Tab = styled.div<{ activeTab: boolean }>`
     props.activeTab ? '3px solid #e02735' : '3px solid transparent'};
 `;
 
+export const SearchContainer = styled.div`
+  position: relative;
+  /* without specified height container has 0px height */
+  min-height: 2.375rem;
+  display: flex;
+  align-items: center;
+  @media (max-width: 576px) {
+    width: 100%;
+    margin-bottom: .5rem;
+  }
+
+  .icon, .input {
+    position: absolute;
+    left: 0;
+  }
+  .icon {
+    z-index: 100;
+  }
+
+  .input {
+    padding: 9px;
+    padding-left: 40px;
+    background: #1E1E1F;
+    border: none;
+    min-width: 22.8125rem;
+    font-size: 1rem;
+    color: #666666;
+    border-bottom: 1px solid transparent;
+
+    @media (max-width: 576px) {
+      min-width: 100%;
+    }
+    
+    &::placeholder {
+      color: #666666;
+      font-size: 1rem;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid #e02735;
+    }
+  }
+  
+  .icon {
+    color: #666666;
+    left: 6px;
+  }
+`
+
 export const ListContainer = styled.div`
   padding: 0 20px;
 `
@@ -31,8 +81,12 @@ export const ListContainer = styled.div`
 export const Controlls = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 2px solid #202122;
   padding: 20px 0;
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
 `
 
 export const ActionButton = styled.button<{color?: 'primary' | 'secondary'}>`
@@ -58,3 +112,4 @@ export const PaginationContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+

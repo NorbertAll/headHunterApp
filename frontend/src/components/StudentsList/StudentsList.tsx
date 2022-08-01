@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableRow , styled, Avatar, } from '@mui/material'
 
 import c from '../../utils/constants';
@@ -45,8 +45,8 @@ const StyledTableRow = styled(TableRow)(() => ({
   '&:last-child td, &:last-child th': {
     border: 'none',
   },
-  '& > *': { 
-    border: 'none'
+  '& td': { 
+    border: 'transparent',
   },
   '& .max-width': {
     flex: 1
@@ -72,9 +72,14 @@ const StyledTableRow = styled(TableRow)(() => ({
 const StudentsList = () => {
   const [activeTab, setActiveTab] = useState(c.INTERVIEWS);
   const [students] = useState(() => testData)
+  const [searchValue, setSearchValue] = useState('')
 
   const changeActiveTab = (tabName: string) => setActiveTab(tabName);
 
+  const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }
+  
   return (
 
       <Container>
@@ -98,7 +103,7 @@ const StudentsList = () => {
           </Tabs>
           <ListContainer>
             <Controlls>
-              <Search />
+              <Search searchValue={searchValue} handleSearchValueChange={handleSearchValueChange}/>
               <ActionButton color='secondary'>Filtrowanie</ActionButton>
             </Controlls>
             
