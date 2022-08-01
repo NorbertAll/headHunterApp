@@ -7,14 +7,14 @@ import {
     NotFoundException,
     Post, Put,
     Req,
-    Res, SetMetadata, UnauthorizedException, UseGuards,
+    Res, UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import { Response, Request } from "express";
 import {AuthGuard} from "./auth.guard";
-import { RegisterDto } from './dto/register.dto';
+
 import * as bcrypt from 'bcrypt';
 import { UserRoles } from 'src/user/entities/user.entity';
 import { Roles } from './auth.role.dekorator';
@@ -41,6 +41,10 @@ export class AuthController {
     {
         const user = await this.userService.findOne({where: {email}});
 
+        if(!user.is_active) {
+            throw new BadRequestException('Your account is not active.');
+        }
+
         if(!user) {
             throw new NotFoundException('User is not found');
         }
@@ -55,11 +59,6 @@ export class AuthController {
             scope: user.roles
 
         });
-
-        //await this.userService.save({token: jwt});
-        //await this.userService.save(jwt);
-        console.log({...user});
-        console.log({...user, name:'log'});
 
         response.cookie('jwt', jwt, {httpOnly: true});
 

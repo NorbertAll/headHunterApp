@@ -16,11 +16,14 @@ export class User {
     email: string;
 
     @Exclude()
-    @Column()
+    @Column({default: null})
     password: string;
 
     @Column({default: "admin"})
     roles: string;
+
+    @Column({default: false})
+    is_active: boolean
 }
 
  export enum UserRoles {
