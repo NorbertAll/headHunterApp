@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableRow , styled, Avatar, } from '@mui/material'
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import c from '../../utils/constants';
 
@@ -79,7 +80,7 @@ const StudentsList = () => {
   const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value)
   }
-  
+
   return (
 
       <Container>
@@ -104,7 +105,10 @@ const StudentsList = () => {
           <ListContainer>
             <Controlls>
               <Search searchValue={searchValue} handleSearchValueChange={handleSearchValueChange}/>
-              <ActionButton color='secondary'>Filtrowanie</ActionButton>
+              <ActionButton color='secondary' style={{ display: 'flex', alignItems: 'center' }}>
+                <FilterAltIcon sx={{ color: '#4D4D4D', fontSize: 22 }}/>
+                <span>Filtrowanie</span>
+              </ActionButton>
             </Controlls>
             
             <Table>
