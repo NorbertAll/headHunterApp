@@ -1,13 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import {
   StyledBoxUnauthorizedContainer,
   StyledUnauthorizedBoxImg,
   StyledUnauthorizedTypography,
-  StyledUnauthorizedLink,
   StyledUnauthorizedLinkForIcon,
 } from './Unauthorized.styles';
 
 export const Unauthorized = () => {
+  const navigate = useNavigate();
+
   const title = 'Brak autoryzacji.';
   const info = 'Ta strona nie jest publicznie dostępna.';
   const text = 'Aby uzyskać do niej dostęp, najpierw się zaloguj.';
@@ -21,11 +23,14 @@ export const Unauthorized = () => {
         </StyledUnauthorizedTypography>
         <Typography>{info.toLocaleUpperCase()}</Typography>
         <Typography marginBottom="5vh">{text.toLocaleUpperCase()}</Typography>
-        <StyledUnauthorizedLink to="/login">
-          <Button size="large" color="error" variant="contained">
-            Strona logowania
-          </Button>
-        </StyledUnauthorizedLink>
+        <Button
+          onClick={() => navigate(-1)}
+          size="large"
+          color="error"
+          variant="contained"
+        >
+          Wróć
+        </Button>
       </StyledBoxUnauthorizedContainer>
       <StyledUnauthorizedLinkForIcon
         color="white"

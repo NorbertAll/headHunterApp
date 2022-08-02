@@ -1,5 +1,4 @@
 import { Box, Link, styled, Typography } from '@mui/material';
-import { Link as LinkRouter } from 'react-router-dom';
 import { theme } from '../../../utils/theme';
 
 import error404 from '../../../assets/images/unauthorizedPerson.png';
@@ -26,12 +25,6 @@ export const StyledUnauthorizedBoxImg = styled(Box)(() => ({
 export const StyledUnauthorizedTypography = styled(Typography)(() => ({
   marginBottom: '1rem',
   color: theme.palette.error.dark,
-}));
-
-export const StyledUnauthorizedLink = styled(LinkRouter)(() => ({
-  color: theme.palette.primary.contrastText,
-  backgroundColor: theme.palette.error.main,
-  textDecoration: 'none',
 }));
 
 export const StyledUnauthorizedLinkForIcon = styled(Link)(() => ({
