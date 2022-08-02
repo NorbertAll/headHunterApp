@@ -7,6 +7,7 @@ import c from '../../utils/constants';
 import Search from './Search';
 import Pagination from './Pagination';
 import { ContentContainer, Container, Controlls, ActionButton, ListContainer, Tab, Tabs } from './styles';
+import { DIRECTION } from './types';
 
 const testData = Array.from(Array(10)).map(() => ({
   id_student: Math.floor(Math.random() * 123124),
@@ -70,10 +71,14 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 
+
 const StudentsList = () => {
   const [activeTab, setActiveTab] = useState(c.INTERVIEWS);
   const [students] = useState(() => testData)
   const [searchValue, setSearchValue] = useState('')
+  const [entries, setEntries] = useState(10)
+  const [page, setPage] = useState(1)
+  const pages = students?.length ? Math.ceil(students.length / entries) : 1
 
   const changeActiveTab = (tabName: string) => setActiveTab(tabName);
 
@@ -81,11 +86,19 @@ const StudentsList = () => {
     setSearchValue(e.target.value)
   }
 
-  return (
+  const handleEntriesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const parsedValue = parseInt(e.target.value)
+    setEntries(parsedValue)
+  }
 
+  const handlePageChange = (direction: DIRECTION) => {
+    if (direction === DIRECTION.inc) return setPage(prev => prev + 1)
+    if (direction === DIRECTION.dec) return setPage(prev => prev - 1)
+  }
+
+  return (
       <Container>
         <ContentContainer>
-
           <Tabs>
             <Tab
               activeTab={activeTab === c.STUDENTS}
@@ -144,7 +157,7 @@ const StudentsList = () => {
 
           </ListContainer>
         </ContentContainer>
-        <Pagination />
+        <Pagination entries={entries} page={page} handleEntriesChange={handleEntriesChange} handlePageChange={handlePageChange} pages={pages}/>
       </Container>
   );
 };

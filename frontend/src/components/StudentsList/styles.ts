@@ -111,5 +111,9 @@ export const ActionButton = styled.button<{color?: 'primary' | 'secondary'}>`
 export const PaginationContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+
+  .select-pages {
+    display: flex;
+  }
 `
 

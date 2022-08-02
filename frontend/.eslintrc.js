@@ -49,6 +49,9 @@ module.exports = {
     'arrow-body-style': 'off',
     'import/no-cycle': 'off',
     'prettier/prettier': 'off',
+    'consistent-return': 'off',
+    'react/require-default-props': 'off',
+    'radix': 'off',
     'import/order': [
       'error',
       {
