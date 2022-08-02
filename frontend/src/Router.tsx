@@ -7,6 +7,7 @@ import { Unauthorized } from './components/global/Unauthorized';
 import { Login } from './components/login/Login';
 import { HeaderAppBar } from './components/HeaderAppBar/HeaderAppBar';
 import { RegistrationStudent } from './components/Registration/RegistrationStudent';
+import { PanelStudent } from './components/PanelStudent/PanelStudent';
 
 
 export const Router = () => {
@@ -18,6 +19,7 @@ export const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/registrationstudent" element={<RegistrationStudent/>} />
+        <Route path="/panelstudent" element={<PanelStudent/>} />
         {/* routes protected for admin */}
         <Route element={<RequireAuth allowedRoles={[UserRoles.ADMIN]} />}>
           <Route path="/admin" element={<div>Strona admina</div>} />
