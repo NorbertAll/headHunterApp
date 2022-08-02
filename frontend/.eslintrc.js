@@ -47,12 +47,11 @@ module.exports = {
     'no-promise-executor-return': 'off',
     'no-param-reassign': 'off',
     'arrow-body-style': 'off',
-    'import/no-cycle': 'off',
+    'import/no-cycle': 'on',
     'prettier/prettier': 'warn',
     'import/order': [
       'warn',
       {
-        'newlines-between': 'always',
         groups: [
           'builtin',
           'external',

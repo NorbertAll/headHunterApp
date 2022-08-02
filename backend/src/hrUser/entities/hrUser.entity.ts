@@ -14,9 +14,19 @@ export class HrUser {
   fullName: string;
 
   @Column()
+  password: string;
+
+  @Column()
   company: string;
 
   @Column()
   maxReservedStudents: number;
-  // TODO: 'add relation'
+  // TODO: 'add relation to auth oneToOne & oneToMany to meeting module'
+  // @OneToOne(() => Auth)
+  // @JoinColumn()
+  // auth: Auth;
+
+  // hrUser can have multiple meetings
+  // @OneToMany(() => Meeting, (meeting) => meeting.hr)
+  // meetings: Meeting[];
 }
