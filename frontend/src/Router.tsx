@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserRoles } from 'types';
 import { RequireAuth } from './contexts/auth/RequireAuth';
 import { NotFound } from './components/global/NotFound/NotFound';
-import { Unauthorized } from './components/global/Unauthorized';
+import { Unauthorized } from './components/global/Unauthorized/Unauthorized';
 import { Login } from './components/login/Login';
 import { HeaderAppBar } from './components/HeaderAppBar/HeaderAppBar';
 import { RegistrationStudent } from './components/Registration/RegistrationStudent';
