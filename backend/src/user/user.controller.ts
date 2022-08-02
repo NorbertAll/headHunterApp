@@ -1,4 +1,14 @@
-import {BadRequestException, Body, Controller, NotFoundException, Post, Req, Res, UseGuards} from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Get,
+    NotFoundException,
+    Post,
+    Put,
+    Req,
+    UseGuards
+} from '@nestjs/common';
 import {RegisterDto} from "../auth/dto/register.dto";
 import {Request} from "express";
 import * as bcrypt from "bcrypt";
@@ -7,12 +17,15 @@ import { Roles } from 'src/auth/auth.role.dekorator';
 import {UserRoles} from "./entities/user.entity";
 import {AuthGuard} from "../auth/auth.guard";
 import {CreateDto} from "./dto/create.dto";
+import {RolesGuard} from "../auth/auth.role.guard";
+import {JwtService} from "@nestjs/jwt";
 
 @Controller('user')
 export class UserController {
 
     constructor(
         private userService: UserService,
+        private jwtService: JwtService,
     ) {
     }
     //register
@@ -56,7 +69,7 @@ export class UserController {
         @Body() body: RegisterDto,
         @Req() request: Request,
         @Body('email') email: string,){
-        const {passwordConfirm, ...data} = body;
+        const {passwordConfirm} = body;
 
         const user = await this.userService.findOne({where: {email}});
 
@@ -68,14 +81,12 @@ export class UserController {
             throw new BadRequestException('Password must by not empty!');
         }
 
-        if (body.password !== body.passwordConfirm) {
+        if (body.password !== passwordConfirm) {
             throw new BadRequestException('Password do not match!');
         }
 
 
         const hashed = await bcrypt.hash(body.password, 12);
-
-        console.log(user);
 
         return this.userService.save({
             ...user,
@@ -84,5 +95,50 @@ export class UserController {
         });
     }
 
+
+    // To Admin
+
+    @UseGuards(AuthGuard)
+    @Get()
+    async user(@Req() request: Request){
+        const cookie = request.cookies['jwt'];
+
+        const {id} = await this.jwtService.verifyAsync(cookie);
+
+        return this.userService.findOne({where:{id}});
+
+    };
+
+    @Roles(UserRoles.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
+    @Get('/admin')
+    async find(@Req() request: Request){
+
+        return this.userService.find({});
+
+    };
+
+    @UseGuards(AuthGuard)
+    @Put(['admin/user/password', 'hr/user/password'])
+    async updatePassword(
+        @Req() request: Request,
+        @Body('password') password: string,
+        @Body('passwordConfirm') passwordConfirm: string,
+    ){
+        if (password !== passwordConfirm) {
+            throw new BadRequestException('Password do not match!');
+        }
+
+        const cookie = request.cookies['jwt'];
+
+        const {id} = await this.jwtService.verifyAsync(cookie);
+
+        await this.userService.update(id, {
+            password: await bcrypt.hash(password, 12)
+        });
+
+        return this.userService.findOne({where:{id}});
+
+    }
 
 }

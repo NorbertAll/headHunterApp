@@ -3,9 +3,8 @@ import {
     Body,
     ClassSerializerInterceptor,
     Controller,
-    Get,
     NotFoundException,
-    Post, Put,
+    Post,
     Req,
     Res, UseGuards,
     UseInterceptors
@@ -14,11 +13,7 @@ import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import { Response, Request } from "express";
 import {AuthGuard} from "./auth.guard";
-
 import * as bcrypt from 'bcrypt';
-import { UserRoles } from 'src/user/entities/user.entity';
-import { Roles } from './auth.role.dekorator';
-import {RolesGuard} from "./auth.role.guard";
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -68,25 +63,7 @@ export class AuthController {
         })
     }
 
-    @UseGuards(AuthGuard)
-    @Get(['/user'])
-    async user(@Req() request: Request){
-        const cookie = request.cookies['jwt'];
 
-        const {id} = await this.jwtService.verifyAsync(cookie);
-
-        return this.userService.findOne({where:{id}});
-
-    };
-
-    @Roles(UserRoles.ADMIN)
-    @UseGuards(AuthGuard, RolesGuard)
-    @Get('/admin')
-    async find(@Req() request: Request){
-
-        return this.userService.find({});
-
-    };
 
     @UseGuards(AuthGuard)
     @Post(['/logout'])
@@ -101,38 +78,14 @@ export class AuthController {
 
         response.clearCookie('jwt');
 
-
-        return [
-            await this.userService.save({
-                ...user,
-                token: null,
-            }),
-            {
-                message: 'success',
-            }
-        ]
-    }
-
-    @UseGuards(AuthGuard)
-    @Put(['admin/user/password', 'hr/user/password'])
-    async updatePassword(
-        @Req() request: Request,
-        @Body('password') password: string,
-        @Body('passwordConfirm') passwordConfirm: string,
-    ){
-        if (password !== passwordConfirm) {
-            throw new BadRequestException('Password do not match!');
-        }
-
-        const cookie = request.cookies['jwt'];
-
-        const {id} = await this.jwtService.verifyAsync(cookie);
-
-        await this.userService.update(id, {
-            password: await bcrypt.hash(password, 12)
+        await this.userService.save({
+            ...user,
+            token: null,
         });
 
-        return this.userService.findOne({where:{id}});
+        return {
+                message: 'success'
+            }
 
     }
 
