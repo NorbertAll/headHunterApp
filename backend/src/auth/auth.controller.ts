@@ -33,16 +33,16 @@ export class AuthController {
   ) {
     const user = await this.userService.findOne({ where: { email } });
 
-    if (!user.is_active) {
-      throw new BadRequestException('Your account is not active.');
-    }
-
     if (!user) {
-      throw new NotFoundException('User is not found');
+      throw new NotFoundException('Wrong email or password');
     }
 
     if (!(await bcrypt.compare(password, user.password))) {
-      throw new BadRequestException('Password is invalid');
+      throw new BadRequestException('Wrong email or password');
+    }
+
+    if (!user.is_active) {
+      throw new BadRequestException('Your account is not active.');
     }
 
     const jwt = await this.jwtService.signAsync({
