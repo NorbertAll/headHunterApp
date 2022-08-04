@@ -1,33 +1,32 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {Exclude} from "class-transformer";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Role } from 'types';
 
 @Entity('users')
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column({default: null})
-    token: string;
+  @Column({ default: null })
+  accessToken: string | null;
 
-    @Column({unique:true})
-    email: string;
+  @Column({ unique: true })
+  email: string;
 
-    @Exclude()
-    @Column({default: null})
-    password: string;
+  @Exclude()
+  @Column({ default: null })
+  passwordHash: string;
 
-    @Column({default: "admin"})
-    roles: string;
+  @Column({ default: false })
+  is_active: boolean;
 
-    @Column({default: false})
-    is_active: boolean
-}
-
- export enum UserRoles {
-    ADMIN= 'admin',
-    HR = 'hr',
-    STUDENT = 'student,'
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.STUDENT,
+  })
+  role: Role;
 }
