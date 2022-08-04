@@ -8,7 +8,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { RegisterDto } from '../auth/dto/register.dto';
+import { AuthRegisterDto } from '../auth/dto/register.dto';
 import { Request } from 'express';
 import { UserService } from './user.service';
 import { Roles } from 'src/auth/auth.role.decorator';
@@ -27,7 +27,7 @@ export class UserController {
   ) {}
 
   @Post(['register'])
-  async register(@Body() body: RegisterDto) {
+  async register(@Body() body: AuthRegisterDto) {
     const { email, password, passwordConfirm, role } = body;
 
     const user = await this.userService.findOne({ where: { email } });

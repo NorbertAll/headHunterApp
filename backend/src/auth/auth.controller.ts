@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthLoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -15,7 +15,7 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post(['/login'])
+  @Post(['login'])
   async login(
     @Body() req: AuthLoginDto,
     @Res({ passthrough: true }) res: Response,
