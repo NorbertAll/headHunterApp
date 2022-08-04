@@ -1,4 +1,4 @@
-export enum UserRoles {
+export enum Role {
   ADMIN = 'admin',
   STUDENT = 'student',
   HR = 'hr',
@@ -6,5 +6,5 @@ export enum UserRoles {
 
 export interface Auth {
   accessToken: string;
-  roles: UserRoles[];
+  roles: Role[];
 }
