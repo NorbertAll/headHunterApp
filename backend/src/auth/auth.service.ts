@@ -1,16 +1,24 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { comparePassword } from 'src/user/utils/hash-password';
-import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthLoginDto } from './dto/login.dto';
+import { JwtPayload } from './jwt.strategy';
+import { v4 as uuid } from 'uuid';
+import { sign } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    @Inject(forwardRef(() => UserService)) private userService: UserService,
+  ) {}
 
   async login(req: AuthLoginDto, res: Response): Promise<any> {
     try {
@@ -42,5 +50,35 @@ export class AuthService {
     } catch (e) {
       return res.json({ error: e.message });
     }
+  }
+
+  createToken(currentTokenId: string): {
+    accessToken: string;
+    expiresIn: number;
+  } {
+    const payload: JwtPayload = { id: currentTokenId };
+    const expiresIn = 60 * 60 * 24;
+    const accessToken = sign(payload, 'Sekret do dodania!!!', { expiresIn });
+
+    return {
+      accessToken,
+      expiresIn,
+    };
+  }
+
+  private async generateToken(user: User): Promise<string> {
+    let token;
+    let userWithThisToken = null;
+    do {
+      token = uuid();
+      userWithThisToken = await this.userService.findOne({
+        accessToken: token,
+      });
+    } while (!!userWithThisToken);
+
+    user.accessToken = token;
+    await this.userService.save(user);
+
+    return token;
   }
 }

@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { UserService } from '../user/user.service';
-import { User } from '../user/entities/user.entity';
 
 export interface JwtPayload {
   id: string;
@@ -16,7 +15,7 @@ function cookieExtractor(req: any): null | string {
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
-      jwtDromRequest: cookieExtractor,
+      jwtFromRequest: cookieExtractor,
       secretOrKey: 'Sekret Do zmiany!!!!', //TODO dodać secret ze zmiennych środowiskowych lub pliku config
     });
   }
