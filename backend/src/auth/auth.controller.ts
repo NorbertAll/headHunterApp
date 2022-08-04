@@ -1,82 +1,25 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
-  NotFoundException,
   Post,
-  Req,
   Res,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { Response, Request } from 'express';
-import { AuthGuard } from './auth.guard';
-import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
+import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthService } from './auth.service';
 
-@Controller()
+@Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post(['/login'])
   async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
-    @Res({ passthrough: true }) response: Response,
-    @Req() request: Request,
-  ) {
-    const user = await this.userService.findOne({ where: { email } });
-
-    if (!user) {
-      throw new NotFoundException('Wrong email or password');
-    }
-
-    if (!(await bcrypt.compare(password, user.password))) {
-      throw new BadRequestException('Wrong email or password');
-    }
-
-    if (!user.is_active) {
-      throw new BadRequestException('Your account is not active.');
-    }
-
-    const jwt = await this.jwtService.signAsync({
-      id: user.id,
-      scope: user.roles,
-    });
-
-    response.cookie('jwt', jwt, { httpOnly: true });
-
-    return this.userService.save({
-      ...user,
-      token: jwt,
-    });
-  }
-
-  @UseGuards(AuthGuard)
-  @Post(['/logout'])
-  async logout(
-    @Req() request: Request,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const cookie = request.cookies['jwt'];
-    const { id } = await this.jwtService.verifyAsync(cookie);
-    const user = await this.userService.findOne({ where: { id } });
-
-    response.clearCookie('jwt');
-
-    await this.userService.save({
-      ...user,
-      token: null,
-    });
-
-    return {
-      message: 'success',
-    };
+    @Body() req: AuthLoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<any> {
+    return this.authService.login(req, res);
   }
 }
