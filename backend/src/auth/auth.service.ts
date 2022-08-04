@@ -38,10 +38,27 @@ export class AuthService {
         throw new BadRequestException('Twoje konto nie zostało aktywowane.');
       }
 
-      const token = await this.createToken(await this.generateToken(user));
+      const token = this.createToken(await this.generateToken(user));
 
       return res
         .cookie('jwt', token.accessToken, {
+          secure: false,
+          domain: 'localhost',
+          httpOnly: true,
+        })
+        .json({ ok: true });
+    } catch (e) {
+      return res.json({ error: e.message });
+    }
+  }
+
+  async logout(user: User, res: Response) {
+    try {
+      user.accessToken = null;
+      await this.userService.save(user);
+
+      return res
+        .clearCookie('jwt', {
           secure: false,
           domain: 'localhost',
           httpOnly: true,
