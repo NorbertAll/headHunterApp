@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  forwardRef,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -73,7 +71,7 @@ export class AuthService {
   } {
     const payload: JwtPayload = { id: currentTokenId };
     const expiresIn = 60 * 60 * 24;
-    const accessToken = sign(payload, 'Sekret do dodania!!!', { expiresIn }); //TODO: add secret
+    const accessToken = sign(payload, 'jwtConstants.secret', { expiresIn }); //TODO: add secret
 
     return {
       accessToken,

@@ -1,13 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-jwt';
+import { Request } from 'express';
+import { Strategy, ExtractJwt } from 'passport-jwt';
 import { UserService } from '../user/user.service';
 
 export interface JwtPayload {
   id: string;
 }
 
-function cookieExtractor(req: any): null | string {
+function cookieExtractor(req: Request): null | string {
   return req && req.cookies ? req.cookies?.jwt ?? null : null;
 }
 
@@ -15,8 +16,8 @@ function cookieExtractor(req: any): null | string {
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
-      jwtFromRequest: cookieExtractor,
-      secretOrKey: 'Sekret Do zmiany!!!!', //TODO dodać secret ze zmiennych środowiskowych lub pliku config
+      jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+      secretOrKey: 'jwtConstants.secret', //TODO dodać secret ze zmiennych środowiskowych lub pliku config
     });
   }
 
@@ -26,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     const user = await this.userService.findOne({
-      token: payload.id,
+      accessToken: payload.id,
     });
 
     if (!user) {

@@ -1,9 +1,19 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { AuthRegisterDto } from '../auth/dto/register.dto';
 import { UserService } from './user.service';
 import { Role } from 'types';
 import { hashPassword } from './utils/hash-password';
 import { CreatedUserDto } from './dto/created-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -46,16 +56,11 @@ export class UserController {
     );
   }
 
-  // To Admin
-  // @UseGuards(AuthGuard)
-  // @Get()
-  // async user(@Req() request: Request) {
-  //   const cookie = request.cookies['jwt'];
-
-  //   const { id } = await this.jwtService.verifyAsync(cookie);
-
-  //   return this.userService.findOne({ where: { id } });
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/')
+  async user(@Req() request: Request) {
+    return this.userService.find({});
+  }
 
   // @Roles(Role.ADMIN)
   // @UseGuards(AuthGuard, RolesGuard)
