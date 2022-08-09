@@ -20,5 +20,5 @@ export class AuthRegisterDto {
   passwordConfirm: string;
 
   @IsString()
-  role: Role;
+  roles: Role;
 }

@@ -11,10 +11,14 @@ import { UserService } from 'src/user/user.service';
 import { comparePassword } from 'src/user/utils/hash-password';
 import { AuthLoginDto } from './dto/login.dto';
 import { JwtPayload } from './jwt.strategy';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private configService: ConfigService,
+    private userService: UserService,
+  ) {}
 
   async login(req: AuthLoginDto, res: Response): Promise<any> {
     try {
@@ -38,13 +42,22 @@ export class AuthService {
 
       return res
         .cookie('jwt', token.accessToken, {
-          secure: false,
-          domain: 'localhost',
+          secure: this.configService.get('HTTPS_ENABLED'),
+          domain: this.configService.get('DOMAIN'),
           httpOnly: true,
         })
-        .json({ ok: true });
+        .json({
+          statusCode: 201,
+          message: 'Zalogowano pomyślnie',
+          loggedIn: true,
+          roles: [user.roles],
+        });
     } catch (e) {
-      return res.json({ error: e.message });
+      return res.status(400).json({
+        statusCode: 400,
+        message: 'Logowanie nie powiodło się',
+        error: e.message,
+      });
     }
   }
 
@@ -55,13 +68,20 @@ export class AuthService {
 
       return res
         .clearCookie('jwt', {
-          secure: false,
-          domain: 'localhost',
+          secure: this.configService.get('HTTPS_ENABLED'),
+          domain: this.configService.get('DOMAIN'),
           httpOnly: true,
         })
-        .json({ ok: true });
+        .json({
+          statusCode: 200,
+          message: 'Wylogowano pomyślnie',
+        });
     } catch (e) {
-      return res.json({ error: e.message });
+      return res.status(400).json({
+        statusCode: 400,
+        message: 'Wylogowanie nie powiodło się',
+        error: e.message,
+      });
     }
   }
 
@@ -71,7 +91,9 @@ export class AuthService {
   } {
     const payload: JwtPayload = { id: currentTokenId };
     const expiresIn = 60 * 60 * 24;
-    const accessToken = sign(payload, 'jwtConstants.secret', { expiresIn }); //TODO: add secret
+    const accessToken = sign(payload, this.configService.get('JWT_SECRET'), {
+      expiresIn,
+    });
 
     return {
       accessToken,

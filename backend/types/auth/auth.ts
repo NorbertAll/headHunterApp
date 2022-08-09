@@ -5,6 +5,6 @@ export enum Role {
 }
 
 export interface Auth {
-  accessToken: string;
+  loggedIn: boolean;
   roles: Role[];
 }

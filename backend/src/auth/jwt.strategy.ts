@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { Strategy, ExtractJwt } from 'passport-jwt';
@@ -14,10 +15,13 @@ function cookieExtractor(req: Request): null | string {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private userService: UserService) {
+  constructor(
+    private configService: ConfigService,
+    private userService: UserService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-      secretOrKey: 'jwtConstants.secret', //TODO dodać secret ze zmiennych środowiskowych lub pliku config
+      secretOrKey: configService.get('JWT_SECRET'), //TODO dodać secret ze zmiennych środowiskowych lub pliku config
     });
   }
 

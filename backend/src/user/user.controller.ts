@@ -4,16 +4,16 @@ import {
   Controller,
   Get,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { AuthRegisterDto } from '../auth/dto/register.dto';
 import { UserService } from './user.service';
 import { Role } from 'types';
 import { hashPassword } from './utils/hash-password';
 import { CreatedUserDto } from './dto/created-user.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../auth/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('user')
 export class UserController {
@@ -21,7 +21,7 @@ export class UserController {
 
   @Post(['register'])
   async register(@Body() body: AuthRegisterDto) {
-    const { email, password, passwordConfirm, role } = body;
+    const { email, password, passwordConfirm, roles } = body;
 
     const user = await this.userService.findOne({ where: { email } });
 
@@ -37,8 +37,8 @@ export class UserController {
       throw new BadRequestException('Hasła do siebie nie pasują!');
     }
 
-    if (!role || !Object.values(Role).includes(role)) {
-      body.role = Role.STUDENT;
+    if (!roles || !Object.values(Role).includes(roles)) {
+      body.roles = Role.STUDENT;
     }
 
     const passwordHash = await hashPassword(body.password);
@@ -56,18 +56,12 @@ export class UserController {
     );
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get('/')
-  async user(@Req() request: Request) {
-    return this.userService.find({});
+  async getAllUsers(options) {
+    return this.userService.find(options);
   }
-
-  // @Roles(Role.ADMIN)
-  // @UseGuards(AuthGuard, RolesGuard)
-  // @Get('/admin')
-  // async find(@Req() request: Request) {
-  //   return this.userService.find({});
-  // }
 
   // @UseGuards(AuthGuard)
   // @Put(['admin/user/password', 'hr/user/password'])
