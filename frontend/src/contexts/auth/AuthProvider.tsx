@@ -12,7 +12,7 @@ interface ProviderProps {
 
 const initialContextValue = {
   auth: { loggedIn: false, roles: [] },
-  setAuth: () => { },
+  setAuth: () => {},
 };
 
 export const AuthContext = createContext<ContextType>(initialContextValue);

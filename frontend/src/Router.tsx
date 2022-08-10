@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { UserRoles } from 'types';
+import { Role } from 'types';
 import { RequireAuth } from './contexts/auth/RequireAuth';
 import { NotFound } from './components/global/NotFound/NotFound';
 import { Unauthorized } from './components/global/Unauthorized/Unauthorized';
@@ -18,23 +18,23 @@ export const Router = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="/registrationstudent" element={<RegistrationStudent/>} />
-        <Route path="/panelstudent" element={<PanelStudent/>} />
-        <Route path="/paneladmin" element={<AdminPanel/>} />
+        <Route path="/registrationstudent" element={<RegistrationStudent />} />
+        <Route path="/panelstudent" element={<PanelStudent />} />
+        <Route path="/paneladmin" element={<AdminPanel />} />
         {/* routes protected for admin */}
-        <Route element={<RequireAuth allowedRoles={[UserRoles.ADMIN]} />}>
+        <Route element={<RequireAuth allowedRoles={[Role.ADMIN]} />}>
           <Route path="/admin" element={<div>Strona admina</div>} />
         </Route>
 
         {/* routes protected for hr */}
-        <Route element={<RequireAuth allowedRoles={[UserRoles.HR]} />}>
+        <Route element={<RequireAuth allowedRoles={[Role.HR]} />}>
           <Route path="/hr" element={<div>Strona hr</div>} />
           <Route path="/hr/:id" element={<HeaderAppBar />} />
           <Route path="/hr/account/:id" element={<div>Konto HR</div>} />
         </Route>
 
         {/* routes protected for student */}
-        <Route element={<RequireAuth allowedRoles={[UserRoles.STUDENT]} />}>
+        <Route element={<RequireAuth allowedRoles={[Role.STUDENT]} />}>
           <Route path="/student" element={<div>Strona studenta</div>} />
         </Route>
 
