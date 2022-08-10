@@ -2,7 +2,7 @@
 import { Box, Button, Link, TextField, Stack } from '@mui/material';
 import { SyntheticEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Auth, UserRoles } from 'types';
+import { Auth, Role } from 'types';
 import { useAuth } from '../../contexts/auth/useAuth';
 import { useApi } from '../../hooks/useApi';
 import { loginRequest } from './loginApi';
@@ -13,11 +13,11 @@ export const Login = () => {
   const login = useApi<Auth>(loginRequest);
 
   useEffect(() => {
-    if (login.data?.roles.find((role) => role === UserRoles.ADMIN))
+    if (login.data?.roles.find((role) => role === Role.ADMIN))
       navigate('/admin');
-    else if (login.data?.roles.find((role) => role === UserRoles.HR))
-      navigate('/hr/123');
-    else if (login.data?.roles.find((role) => role === UserRoles.STUDENT))
+    else if (login.data?.roles.find((role) => role === Role.HR))
+      navigate('/hr');
+    else if (login.data?.roles.find((role) => role === Role.STUDENT))
       navigate('/student');
     else navigate('/login');
   }, [auth]);
