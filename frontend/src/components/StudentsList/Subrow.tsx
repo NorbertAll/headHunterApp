@@ -20,7 +20,13 @@ const StyledTableRow = styled(TableRow)(() => ({
     padding: 16,
   },
   '& .info-container': { 
-    borderBottom: 'none', display: 'flex', padding: 0
+    borderBottom: 'none', 
+    display: 'flex', 
+    padding: 0,
+    // flexDirection: 'column',
+    '@media (max-width: 576px)' : {
+      flexDirection: 'column',
+    }
   },
   '& .info': {
     display: 'flex',

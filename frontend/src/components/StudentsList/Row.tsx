@@ -13,6 +13,10 @@ const StyledTableRow = styled(TableRow)(() => ({
   borderBottom: '16px solid #1E1E1F',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
+  '@media (max-width: 576px)' : {
+    flexDirection: 'column',
+  },
   '&.no-border-bottom': {
     border: 'none'
   },
@@ -56,33 +60,39 @@ const Row = ({ student, index, activeTab, tabLength = 0 }: IProps) => {
   return (
     <>
       <StyledTableRow key={student.id_student} className={index === tabLength - 1 ? 'no-border-bottom' : ''}>
-        {activeTab === c.INTERVIEWS && (
-          <TableCell className="reservation">
-              <span className='reservation-tag'>Rezerwacja do</span>
-              <span className='date'>30.07.2022</span>
+        <TableCell style={{ padding: 0, display: 'flex', alignItems: 'center' }}>
+          {activeTab === c.INTERVIEWS && (
+            <TableCell className="reservation">
+                <span className='reservation-tag'>Rezerwacja do</span>
+                <span className='date'>30.07.2022</span>
+            </TableCell>
+          )}
+          {activeTab === c.INTERVIEWS && (
+            <Avatar />
+          )}
+          <TableCell className='max-width name'>
+          {activeTab === c.STUDENTS ? 
+          `${student.first_name} ${student.last_name[0]}.` :
+          `${student.first_name} ${student.last_name}`
+          }
           </TableCell>
-        )}
-        {activeTab === c.INTERVIEWS && (
-          <Avatar />
-        )}
-        <TableCell className='max-width name'>
-        {activeTab === c.STUDENTS ? 
-        `${student.first_name} ${student.last_name[0]}.` :
-        `${student.first_name} ${student.last_name}`
-        }
         </TableCell>
-        <TableCell>
-          {activeTab === c.STUDENTS && <ActionButton className='m-l-sm'>Zarezerwuj rozmowę</ActionButton>}
-          {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Pokaż CV</ActionButton>}
-          {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Brak zainteresowania</ActionButton>}
-          {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Zatrudniony</ActionButton>}
-          
+        <TableCell style={{ padding: 0, display: 'flex' }}>
+          <TableCell>
+            {activeTab === c.STUDENTS && <ActionButton className='m-l-sm'>Zarezerwuj rozmowę</ActionButton>}
+            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Pokaż CV</ActionButton>}
+            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Brak zainteresowania</ActionButton>}
+            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Zatrudniony</ActionButton>}
+            
+          </TableCell>
+          <TableCell>
+            <IconButton aria-label="expand row" size="small" onClick={() => setSubrowOpen(prev => !prev)}>
+              {subrowOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
         </TableCell>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setSubrowOpen(prev => !prev)}>
-            {subrowOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
+
+
       </StyledTableRow>
       <Subrow subrowOpen={subrowOpen} student={student}/>
     </>
