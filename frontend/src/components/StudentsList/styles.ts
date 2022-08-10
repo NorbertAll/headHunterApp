@@ -109,11 +109,44 @@ export const ActionButton = styled.button<{color?: 'primary' | 'secondary'}>`
 `
 
 export const PaginationContainer = styled.div`
+  margin: 2rem 0;
   display: flex;
   justify-content: flex-end;
-
+  align-items: center;
+  label {
+    color: #F7F7F7;
+  }
+  select {
+    padding: 4px 2px;
+    border: none;
+    margin: 0 .5rem;
+  }
+  .pages-number {
+    color: #F7F7F7;
+    margin: 0 .5rem;
+  }
   .select-pages {
     display: flex;
+  }
+  .pages-buttons {
+    display: flex;
+    align-items: center;
+  }
+  .change-page-button {
+    cursor: pointer;
+    height: 1.625rem;
+    width: 1.625rem;
+    border: none;
+    background: #CFCFCF;
+    margin: 0 .5rem;
+    position: relative;
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `
 

@@ -82,6 +82,7 @@ const StudentsList = () => {
             
             <Table>
               <TableBody>
+                {/* TODO slice nr of entries based on current page */}
                 {students?.length > 0 && students.map((item, index) => (
                   <Row key={item.id_student} student={item} index={index} tabLength={students?.length} activeTab={activeTab}/>
                 ))}
@@ -90,7 +91,8 @@ const StudentsList = () => {
 
           </ListContainer>
         </ContentContainer>
-        <Pagination entries={entries} page={page} handleEntriesChange={handleEntriesChange} handlePageChange={handlePageChange} pages={pages}/>
+        <Pagination entries={entries} page={page} handleEntriesChange={handleEntriesChange} handlePageChange={handlePageChange} pages={pages} 
+        tabLength={students?.length}/>
       </Container>
   );
 };
