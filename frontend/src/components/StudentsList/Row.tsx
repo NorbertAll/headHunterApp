@@ -48,6 +48,7 @@ interface IProps {
 }
 
 const Row = ({ student, index, activeTab, tabLength }: IProps) => {
+  console.log('rend')
   return (
     <StyledTableRow key={student.id_student} className={index === tabLength - 1 ? 'no-border-bottom' : ''}>
       {activeTab === c.INTERVIEWS && (

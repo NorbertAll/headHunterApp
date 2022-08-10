@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Table, TableBody } from '@mui/material'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
@@ -7,8 +7,9 @@ import c from '../../utils/constants';
 import Search from './Search';
 import Pagination from './Pagination';
 import Row from './Row'
-import { ContentContainer, Container, Controlls, ActionButton, ListContainer, Tab, Tabs } from './styles';
+import { ContentContainer, Container, Controlls, ActionButton, ListContainer } from './styles';
 import { DIRECTION } from './types';
+import TableTabs from './TableTabs';
 
 const testData = Array.from(Array(10)).map(() => ({
   id_student: Math.floor(Math.random() * 123124),
@@ -50,7 +51,7 @@ const StudentsList = () => {
   const [page, setPage] = useState(1)
   const pages = students?.length ? Math.ceil(students.length / entries) : 1
 
-  const changeActiveTab = (tabName: string) => setActiveTab(tabName);
+  const changeActiveTab = useCallback((tabName: string) => setActiveTab(tabName), [])
 
   const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value)
@@ -69,22 +70,7 @@ const StudentsList = () => {
   return (
       <Container>
         <ContentContainer>
-          <Tabs>
-            <Tab
-              activeTab={activeTab === c.STUDENTS}
-              className="tab"
-              onClick={() => changeActiveTab(c.STUDENTS)}
-            >
-              Dostępni kursanci
-            </Tab>
-            <Tab
-              activeTab={activeTab === c.INTERVIEWS}
-              className="tab"
-              onClick={() => changeActiveTab(c.INTERVIEWS)}
-            >
-              Do rozmowy
-            </Tab>
-          </Tabs>
+          <TableTabs activeTab={activeTab} changeActiveTab={changeActiveTab} />
           <ListContainer>
             <Controlls>
               <Search searchValue={searchValue} handleSearchValueChange={handleSearchValueChange}/>
