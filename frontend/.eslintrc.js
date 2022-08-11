@@ -47,7 +47,7 @@ module.exports = {
     'no-promise-executor-return': 'off',
     'no-param-reassign': 'off',
     'arrow-body-style': 'off',
-    'import/no-cycle': 'on',
+    'import/no-cycle': 'warn',
     'prettier/prettier': 'warn',
     'import/order': [
       'warn',
@@ -74,5 +74,6 @@ module.exports = {
         ],
       },
     ],
+    'import/no-unresolved': 'off',
   },
 };

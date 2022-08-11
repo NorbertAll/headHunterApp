@@ -11,15 +11,15 @@ interface ProviderProps {
 }
 
 const initialContextValue = {
-  auth: { accessToken: '', roles: [] },
-  setAuth: () => { },
+  auth: { loggedIn: false, roles: [] },
+  setAuth: () => {},
 };
 
 export const AuthContext = createContext<ContextType>(initialContextValue);
 
 export const AuthProvider = (props: ProviderProps) => {
   const [auth, setAuth] = useState<Auth>({
-    accessToken: '',
+    loggedIn: false,
     roles: [],
   });
 
