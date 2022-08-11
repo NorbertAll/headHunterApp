@@ -79,7 +79,7 @@ const FileUploader = () => {
      const json = JSON.parse(jsonString);
     
 
-  axios.post("http://localhost:3001/adminpanel/", json
+  axios.post("http://localhost:3001/user/hr/create", json
   , {
     headers: {
       // Overwrite Axios's automatically set Content-Type

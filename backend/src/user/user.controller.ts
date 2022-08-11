@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -14,10 +15,40 @@ import { CreatedUserDto } from './dto/created-user.dto';
 import { Roles } from '../auth/roles.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
+import { MailService } from '../mail/mail.service';
+import { registerTemplate } from '../templates/email/register';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    @Inject(MailService) private mailService: MailService,
+  ) {}
+
+  //TEST SEND E-MAIL
+  // //Added student and HR to DB
+  // // @UseGuards(JwtAuthGuard, RolesGuard)
+  // // @Roles(Role.ADMIN)
+  // @Post('create/student')
+  // async create(@Body() body: CreatedUserDto) {
+  //   const { email, name } = body;
+  //
+  //   try {
+  //     const token = Math.floor(1000 + Math.random() * 9000).toString();
+  //     await this.mailService.sendMail(
+  //       email,
+  //       'test',
+  //       registerTemplate(name, token),
+  //     );
+  //     console.log(token);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //
+  //   return {
+  //     message: 'send email',
+  //   };
+  // }
 
   @Post(['register'])
   async register(@Body() body: AuthRegisterDto) {

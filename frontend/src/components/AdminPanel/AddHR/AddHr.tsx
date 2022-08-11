@@ -39,12 +39,12 @@ const AddHr = () => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Nieprawidłowy mail').required("Mail wymagany"),
     full_name: Yup.string().required("Imię i nazwisko wymagane"),
-    company: Yup.string().required("Musisz podać nazwę firmy"),
+    name: Yup.string().required("Musisz podać nazwę firmy"),
     max_reserved_student: Yup.number().typeError('musisz podać liczbę').min(1, "za mała liczba").max(999, "za duża liczba").required("Liczba kursantów wymagana"),
   });
 
   const onSubmit = (data:any) => {
-    axios.post("http://localhost:3001/adminpanel", data).then((response) => {
+    axios.post("http://localhost:3001/user/hr/create", data).then((response) => {
         console.log(response);
         
     });
