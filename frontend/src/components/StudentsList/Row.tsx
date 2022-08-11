@@ -10,7 +10,7 @@ import { ActionButton } from './styles';
 import { IStudent } from './types';
 
 const StyledTableRow = styled(TableRow)(() => ({
-  borderBottom: '16px solid #1E1E1F',
+  
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -43,6 +43,24 @@ const StyledTableRow = styled(TableRow)(() => ({
       fontSize: 14,
       color: '#CFCFCF'
     }
+  },
+  '& .actions-container': {
+    display: 'flex',
+    padding: 0, 
+    '@media (max-width: 576px)' : {
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+  },
+  '& .buttons': {
+    // padding: 0, 
+    '@media (max-width: 576px)' : {
+      display: 'flex',
+      flexDirection: 'column',
+      '& button': {
+        marginBottom: '.5rem',
+      }
+    },
   }
 }));
 
@@ -53,9 +71,12 @@ interface IProps {
   // I use intterface from development test data 
   student: IStudent
   activeTab: string
+  handleBookInterview: (id: string | number) => void
+  handleStudentNoInterest: (id: string | number) => void
+  handleStudentHired: (id: string | number) => void
 }
 
-const Row = ({ student, index, activeTab, tabLength = 0 }: IProps) => {
+const Row = ({ student, index, activeTab, tabLength = 0, handleBookInterview, handleStudentNoInterest, handleStudentHired }: IProps) => {
   const [ subrowOpen, setSubrowOpen ] = useState(false)
   return (
     <>
@@ -77,12 +98,17 @@ const Row = ({ student, index, activeTab, tabLength = 0 }: IProps) => {
           }
           </TableCell>
         </TableCell>
-        <TableCell style={{ padding: 0, display: 'flex' }}>
-          <TableCell>
-            {activeTab === c.STUDENTS && <ActionButton className='m-l-sm'>Zarezerwuj rozmowę</ActionButton>}
-            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Pokaż CV</ActionButton>}
-            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Brak zainteresowania</ActionButton>}
-            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm'>Zatrudniony</ActionButton>}
+        <TableCell className='actions-container'>
+          <TableCell className='buttons'>
+            {activeTab === c.STUDENTS && <ActionButton className='m-l-sm' onClick={() => handleBookInterview(student.id_student)}>Zarezerwuj rozmowę</ActionButton>}
+            {activeTab === c.INTERVIEWS && (
+              <ActionButton className='m-l-sm'>
+                {/* Should be link to student's CV */}
+                Pokaż CV
+              </ActionButton>
+            )}
+            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm' onClick={() => handleStudentNoInterest(student.id_student)}>Brak zainteresowania</ActionButton>}
+            {activeTab === c.INTERVIEWS && <ActionButton className='m-l-sm' onClick={() => handleStudentHired(student.id_student)}>Zatrudniony</ActionButton>}
             
           </TableCell>
           <TableCell>

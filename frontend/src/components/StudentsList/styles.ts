@@ -102,10 +102,21 @@ export const ActionButton = styled.button<{color?: 'primary' | 'secondary'}>`
       default:
         return '#e02735'
     }
-  }
-  };
+  }};
   border: none;
   padding: 10px;
+  &:active {
+    background-color: ${props => {
+      switch (props.color) {
+        case 'primary':
+          return '#941520'
+        case 'secondary':
+          return '#171717'
+        default:
+          return '#941520'
+      }
+    }};
+  }
 `
 
 export const PaginationContainer = styled.div`

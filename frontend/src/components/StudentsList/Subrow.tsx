@@ -12,7 +12,8 @@ interface IProps {
 
 const StyledTableRow = styled(TableRow)(() => ({
   background: '#222324',
-  '&:last-child td, &:last-child th': {
+  borderBottom: '16px solid #1E1E1F',
+  '&:last-child': {
     border: 'none',
   },
   '& td': { 

@@ -44,12 +44,13 @@ const testData = Array.from(Array(10)).map(() => ({
 
 
 const StudentsList = () => {
-  const [activeTab, setActiveTab] = useState(c.INTERVIEWS);
-  const [students] = useState(() => testData)
+  const [activeTab, setActiveTab] = useState(c.STUDENTS);
+  const [students] = useState(() => testData) // add logic for fetching data from backend
   const [searchValue, setSearchValue] = useState('')
   const [entries, setEntries] = useState(10)
   const [page, setPage] = useState(1)
   const pages = students?.length ? Math.ceil(students.length / entries) : 1
+  const tabLength = students?.length ?? 0
 
   const changeActiveTab = useCallback((tabName: string) => setActiveTab(tabName), [])
 
@@ -66,6 +67,12 @@ const StudentsList = () => {
     if (direction === DIRECTION.inc) return setPage(prev => prev + 1)
     if (direction === DIRECTION.dec) return setPage(prev => prev - 1)
   }
+  // TODO after backend is connected
+  const handleBookInterview = (id: string | number) => { console.log(id) }
+
+  const handleStudentNoInterest = (id: string | number) => { console.log(id) }
+
+  const handleStudentHired = (id: string | number) => { console.log(id) }
 
   return (
       <Container>
@@ -83,8 +90,17 @@ const StudentsList = () => {
             <Table>
               <TableBody>
                 {/* TODO slice nr of entries based on current page */}
-                {students?.length > 0 && students.map((item, index) => (
-                  <Row key={item.id_student} student={item} index={index} tabLength={students?.length} activeTab={activeTab}/>
+                {tabLength > 0 && students.map((item, index) => (
+                  <Row 
+                    key={item.id_student} 
+                    student={item} 
+                    index={index} 
+                    tabLength={tabLength} 
+                    activeTab={activeTab}
+                    handleBookInterview={handleBookInterview}
+                    handleStudentNoInterest={handleStudentNoInterest}
+                    handleStudentHired={handleStudentHired}
+                  />
                 ))}
               </TableBody>
             </Table>
@@ -92,7 +108,7 @@ const StudentsList = () => {
           </ListContainer>
         </ContentContainer>
         <Pagination entries={entries} page={page} handleEntriesChange={handleEntriesChange} handlePageChange={handlePageChange} pages={pages} 
-        tabLength={students?.length}/>
+        tabLength={tabLength}/>
       </Container>
   );
 };
