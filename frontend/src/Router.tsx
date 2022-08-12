@@ -6,6 +6,7 @@ import { NotFound } from './components/global/NotFound/NotFound';
 import { Unauthorized } from './components/global/Unauthorized';
 import { Login } from './components/login/Login';
 import { HeaderAppBar } from './components/HeaderAppBar/HeaderAppBar';
+import { StudentDetails } from './components/StudentDetails/StudentDetails';
 
 export const Router = () => {
   return (
@@ -26,6 +27,7 @@ export const Router = () => {
           <Route path="/hr" element={<div>Strona hr</div>} />
           <Route path="/hr/:id" element={<HeaderAppBar />} />
           <Route path="/hr/account/:id" element={<div>Konto HR</div>} />
+          <Route path="/hr/student/:id" element={<StudentDetails />} />
         </Route>
 
         {/* routes protected for student */}
