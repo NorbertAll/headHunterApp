@@ -19,7 +19,7 @@ export const StudentProject = () => {
         paddingLeft={pxToRem(26)}
         sx={{ backgroundColor: theme.palette.primary.light }}
       >
-        Porfolio
+        Projekt na zaliczenie
       </Typography>
       <StyledBoxProject>
         <Box>
