@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import EmailIcon from '@mui/icons-material/Email';
 import { pxToRem } from '../../../utils/styles';
+import { theme } from '../../../utils/theme';
 
 import {
   StyledBoxStudentGit,
@@ -26,16 +27,16 @@ export const StudentCardInfo = () => {
       </StyledBoxStudentGit>
       <Box>
         <StyledBoxStudentContactItem>
-          <CallIcon sx={{ color: 'gray' }} />
+          <CallIcon sx={{ color: theme.palette.secondary.dark }} />
           +48 101010101
         </StyledBoxStudentContactItem>
         <StyledBoxStudentContactItem>
-          <EmailIcon sx={{ color: 'gray' }} />
-          jankowalski@gmail.com
+          <EmailIcon sx={{ color: theme.palette.secondary.dark }} />
+          testertestowy@gmail.com
         </StyledBoxStudentContactItem>
       </Box>
       <Box>
-        <Typography fontSize={pxToRem(14)} color="gray">
+        <Typography fontSize={pxToRem(14)} color={theme.palette.secondary.dark}>
           O mnie
         </Typography>
         <Typography fontSize={pxToRem(14)} marginBottom={pxToRem(36)}>
@@ -44,10 +45,20 @@ export const StudentCardInfo = () => {
           asperiores porro ipsum consequuntur velit
         </Typography>
       </Box>
-      <StyledButtonAction variant="contained" fullWidth size="small">
+      <StyledButtonAction
+        variant="contained"
+        color="error"
+        fullWidth
+        size="small"
+      >
         Brak zainteresowania
       </StyledButtonAction>
-      <StyledButtonAction variant="contained" fullWidth size="small">
+      <StyledButtonAction
+        variant="contained"
+        color="error"
+        fullWidth
+        size="small"
+      >
         Zatrudniony
       </StyledButtonAction>
     </StyledCardStudentInfo>

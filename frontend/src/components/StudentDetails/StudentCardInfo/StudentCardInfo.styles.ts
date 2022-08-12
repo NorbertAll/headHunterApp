@@ -1,6 +1,7 @@
 import { Box, styled, Card, Avatar, Button } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { pxToRem } from '../../../utils/styles';
+import { theme } from '../../../utils/theme';
 
 export const StyledCardStudentInfo = styled(Card)(() => ({
   padding: `${pxToRem(30)} ${pxToRem(26)} ${pxToRem(23)}`,
@@ -9,6 +10,7 @@ export const StyledCardStudentInfo = styled(Card)(() => ({
   justifyContent: 'center',
   alignItems: 'center',
   fontSize: pxToRem(14),
+  backgroundColor: theme.palette.primary.light,
 }));
 
 export const StyledCardStudentAvatar = styled(Avatar)(() => ({
