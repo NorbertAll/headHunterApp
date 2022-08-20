@@ -10,6 +10,8 @@ import Row from './Row'
 import { ContentContainer, Container, Controlls, ActionButton, ListContainer } from './styles';
 import { DIRECTION } from './types';
 import TableTabs from './TableTabs';
+import FilterDialog from './FilterDialog/FilterDialog';
+import defaultFilter from './defaultFilter';
 
 const testData = Array.from(Array(10)).map(() => ({
   id_student: Math.floor(Math.random() * 123124),
@@ -40,15 +42,14 @@ const testData = Array.from(Array(10)).map(() => ({
 }))
 
 
-
-
-
 const StudentsList = () => {
   const [activeTab, setActiveTab] = useState(c.STUDENTS);
   const [students] = useState(() => testData) // add logic for fetching data from backend
   const [searchValue, setSearchValue] = useState('')
   const [entries, setEntries] = useState(10)
   const [page, setPage] = useState(1)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [chosenFilter, setChosenFilter] = useState(() => defaultFilter)
   const pages = students?.length ? Math.ceil(students.length / entries) : 1
   const tabLength = students?.length ?? 0
 
@@ -74,6 +75,10 @@ const StudentsList = () => {
 
   const handleStudentHired = (id: string | number) => { console.log(id) }
 
+  const toggleDialogOpen = () => setDialogOpen(prev => !prev)
+
+  const handleChangeFilter = (newFilerObj: typeof defaultFilter) => setChosenFilter(newFilerObj)
+
   return (
       <Container>
         <ContentContainer>
@@ -81,7 +86,7 @@ const StudentsList = () => {
           <ListContainer>
             <Controlls>
               <Search searchValue={searchValue} handleSearchValueChange={handleSearchValueChange}/>
-              <ActionButton color='secondary' style={{ display: 'flex', alignItems: 'center' }}>
+              <ActionButton color='secondary' style={{ display: 'flex', alignItems: 'center' }} onClick={toggleDialogOpen}>
                 <FilterAltIcon sx={{ color: '#4D4D4D', fontSize: 22 }}/>
                 <span>Filtrowanie</span>
               </ActionButton>
@@ -109,6 +114,7 @@ const StudentsList = () => {
         </ContentContainer>
         <Pagination entries={entries} page={page} handleEntriesChange={handleEntriesChange} handlePageChange={handlePageChange} pages={pages} 
         tabLength={tabLength}/>
+        <FilterDialog dialogOpen={dialogOpen} handleClose={toggleDialogOpen} chosenFilter={chosenFilter} handleChangeFilter={handleChangeFilter}/>
       </Container>
   );
 };
